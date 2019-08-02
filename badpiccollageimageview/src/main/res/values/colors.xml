@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="stroke_color">#F44336</color>
+    <color name="secondary_stroke_color">#F4585E</color>
+    <color name="light_cyan">#D1FAFF</color>
+    <color name="zomp">#43AA8B</color>
+    <color name="japanese_indigo">#254441</color>
+</resources>

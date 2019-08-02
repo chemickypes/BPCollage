@@ -1,0 +1,73 @@
+package com.hooloovoochimico.genericlistbottomsheet
+
+import android.content.Context
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import androidx.annotation.LayoutRes
+import androidx.recyclerview.widget.RecyclerView
+
+
+internal class GenericBottomSheetAdapter(val context: Context,
+                                   @LayoutRes val rowLayout: Int = R.layout.generic_row,
+                                   private val bind: ((View, Any) -> Unit)? = null,
+                                         private val listener: ((View, Any) -> Unit)? = null,
+                                   listItem: List<GenericBottomSheet.Item>? = null): RecyclerView.Adapter<GenericBottomSheetAdapter.GenericAdaperViewHolder>(){
+
+
+    private val list = mutableListOf<GenericBottomSheet.Item>()
+
+    init {
+        list.addAll(listItem?: emptyList())
+    }
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GenericAdaperViewHolder {
+        return GenericAdaperViewHolder(LayoutInflater.from(context).inflate(rowLayout,parent,false))
+    }
+
+    override fun getItemCount(): Int  = list.size
+
+    override fun onBindViewHolder(holder: GenericAdaperViewHolder, position: Int) {
+        holder.bind(bind, listener,list[position].element)
+    }
+
+    fun addAll(items: List<GenericBottomSheet.Item>){
+        list.addAll(items)
+        notifyDataSetChanged()
+    }
+
+
+    class GenericAdaperViewHolder(itemView: View): RecyclerView.ViewHolder(itemView){
+
+        fun bind(action: ((View, Any) -> Unit)? = null,listener: ((View, Any) -> Unit)? = null, any:Any){
+            itemView.setOnClickListener {
+                listener?.invoke(it,any)
+            }
+            action?.invoke(itemView,any)
+        }
+
+    }
+}
+
+
+internal class GenericBottmSheetAdapterBuilder{
+
+    var context: Context? = null
+    var rowLayout: Int = R.layout.generic_row
+    var bind:  ((View, Any) -> Unit)? = null
+    var listener: ((View, Any) -> Unit)? = null
+    internal var listItem: List<GenericBottomSheet.Item>? = null
+
+    internal fun build(): GenericBottomSheetAdapter = GenericBottomSheetAdapter(context!!,rowLayout, bind,listener,listItem)
+}
+
+internal fun getAdapter(block: GenericBottmSheetAdapterBuilder.() -> Unit): GenericBottomSheetAdapter{
+
+    val builder = GenericBottmSheetAdapterBuilder()
+
+    block.invoke(builder)
+
+    return builder.build()
+
+}
+

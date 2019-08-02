@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">BadPicCollage</string>
+    <string name="action_add">Add Image</string>
+    <string name="pick_from_gallery">Gallery</string>
+    <string name="pick_from_camera">Camera</string>
+    <string name="action_save">save and share</string>
+    <string name="add_text">Text</string>
+    <string name="double_tap_to_edit">Double tap to edit</string>
+</resources>

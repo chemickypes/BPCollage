@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#F44336</color>
+    <color name="colorPrimaryDark">#80F4585E</color>
+    <color name="colorAccent">#D81B60</color>
+
+    <color name="colorPrimaryPix">#F44336</color>
+    <color name="colorPrimaryLightPix">#80F4585E</color>
+
+    <color name="stroke_color">#F44336</color>
+    <color name="secondary_stroke_color">#F4585E</color>
+    <color name="light_cyan">#D1FAFF</color>
+    <color name="zomp">#43AA8B</color>
+    <color name="japanese_indigo">#254441</color>
+    <color name="text_color">#111111</color>
+    <color name="transparent_black">#55000000</color>
+</resources>
