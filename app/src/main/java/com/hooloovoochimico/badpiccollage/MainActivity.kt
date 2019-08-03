@@ -62,8 +62,26 @@ class MainActivity : AppCompatActivity(), TextEditorDialogFragment.OnTextLayerCa
     private val textPanelAdapter by lazy {
         getTextActions().toMutableList().toAdapter(
             rowLayout = R.layout.action_text_panel_item,
-            onBindContent = {holder, position, element ->
+            onBindContent = {holder, _, element ->
+                with(holder[R.id.imvaction]){
+                    (this as? ImageView)?.setImageResource(
+                        when(element.action){
+                            ActionModelsEnum.INCREASE_TEXT -> R.drawable.ic_add_red
+                            ActionModelsEnum.DECREASE_TEXT -> R.drawable.ic_decrease_text_red
+                            ActionModelsEnum.CHOOSE_TEXT_COLOR -> R.drawable.ic_change_color_red
+                            ActionModelsEnum.CHOOSE_BG_TEXT_COLOR -> R.drawable.ic_change_bgcolor_red
+                            ActionModelsEnum.CHOOSE_TEXT_FONT -> R.drawable.ic_change_font_red
+                            ActionModelsEnum.EDIT_TEXT -> R.drawable.ic_pencil
+                            ActionModelsEnum.CANCEL -> R.drawable.ic_cancel_red
+                            else -> R.drawable.ic_add_red
 
+                        }
+                    )
+                }
+
+                holder.itemView.setOnClickListener {
+                    handleTextEditAction(element.action)
+                }
             }
         )
     }
@@ -94,6 +112,7 @@ class MainActivity : AppCompatActivity(), TextEditorDialogFragment.OnTextLayerCa
                         text.text = getString(R.string.add_text)
                         imgView.setImageResource(R.drawable.ic_pencil)
                     }
+                    else -> {}
 
                 }
 
@@ -284,6 +303,11 @@ class MainActivity : AppCompatActivity(), TextEditorDialogFragment.OnTextLayerCa
                 p0?.dismiss()
             }
             .show()
+    }
+
+
+    private fun handleTextEditAction(action: ActionModelsEnum){
+
     }
 
 
