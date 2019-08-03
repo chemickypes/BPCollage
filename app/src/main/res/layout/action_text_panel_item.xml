@@ -8,7 +8,8 @@ android:paddingStart="24dp"
 android:paddingRight="24dp"
 android:paddingLeft="24dp"
 android:paddingEnd="24dp"
-android:background="@drawable/item_action_background">
+android:background="@drawable/item_action_background"
+android:layout_margin="3dp">
 
     <ImageView android:layout_width="24dp" android:layout_height="24dp"
     android:id="@+id/imvaction"

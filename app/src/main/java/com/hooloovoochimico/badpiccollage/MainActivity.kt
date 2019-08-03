@@ -15,6 +15,8 @@ import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
 import androidx.multidex.MultiDexApplication
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.hooloovoochimico.badpiccollageimageview.*
 import com.hooloovoochimico.genericlistbottomsheet.GenericBottomSheet
 import com.hooloovoochimico.genericlistbottomsheet.getGenericBottomSheet
@@ -133,13 +135,21 @@ class MainActivity : AppCompatActivity(), TextEditorDialogFragment.OnTextLayerCa
         }
     }
 
+    private var editTextPanel : RecyclerView? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        editTextPanel = findViewById<RecyclerView>(R.id.text_action_panel).apply {
+            layoutManager = LinearLayoutManager(this@MainActivity,LinearLayoutManager.HORIZONTAL,false)
+            adapter = textPanelAdapter
+        }
+
 
         imageView.motionViewCallback = object : BadPicCollageImageView.MotionViewCallback{
             override fun onEntitySelected(entity: MotionEntity?) {
+                openEditTextPanel(entity is TextEntity)
             }
 
             override fun onEntityDoubleTap(entity: MotionEntity) {
@@ -271,7 +281,11 @@ class MainActivity : AppCompatActivity(), TextEditorDialogFragment.OnTextLayerCa
                     canvasHeight = imageView.height,
                     fontProvider = BPCFontProvider.getFontProvider(this))
             )
+
+            openEditTextPanel(true)
         }
+
+
     }
 
     private fun openColorPicker(textColor:Boolean = true){
@@ -306,8 +320,27 @@ class MainActivity : AppCompatActivity(), TextEditorDialogFragment.OnTextLayerCa
     }
 
 
-    private fun handleTextEditAction(action: ActionModelsEnum){
+    private fun handleTextEditAction(action: ActionModelsEnum) {
+        when (action) {
+            ActionModelsEnum.INCREASE_TEXT -> imageView.increaseSelectedTextEntitySize()
+            ActionModelsEnum.DECREASE_TEXT -> imageView.decreaseSelectedTextEntitySize()
+            ActionModelsEnum.CHOOSE_TEXT_COLOR -> openColorPicker(true)
+            ActionModelsEnum.CHOOSE_BG_TEXT_COLOR -> openColorPicker(false)
+            ActionModelsEnum.CHOOSE_TEXT_FONT -> openFontDialog()
+            ActionModelsEnum.EDIT_TEXT -> {
+            }
+            ActionModelsEnum.CANCEL -> {
+                imageView.unselectEntity()
+                openEditTextPanel(false)
+            }
+            else -> {
+            }
+        }
+    }
 
+
+    private fun openEditTextPanel(b: Boolean) {
+        editTextPanel?.visibility = if(b)View.VISIBLE else View.GONE
     }
 
 
