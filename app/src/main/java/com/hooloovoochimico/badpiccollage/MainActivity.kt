@@ -18,6 +18,7 @@ import androidx.multidex.MultiDexApplication
 import com.hooloovoochimico.badpiccollageimageview.*
 import com.hooloovoochimico.genericlistbottomsheet.GenericBottomSheet
 import com.hooloovoochimico.genericlistbottomsheet.getGenericBottomSheet
+import com.manzo.slang.navigation.toAdapter
 import com.miguelbcr.ui.rx_paparazzo2.RxPaparazzo
 import com.miguelbcr.ui.rx_paparazzo2.entities.FileData
 import com.orhanobut.logger.AndroidLogAdapter
@@ -58,6 +59,14 @@ class BadPicCollageApp: MultiDexApplication(){
 class MainActivity : AppCompatActivity(), TextEditorDialogFragment.OnTextLayerCallback {
 
 
+    private val textPanelAdapter by lazy {
+        getTextActions().toMutableList().toAdapter(
+            rowLayout = R.layout.action_text_panel_item,
+            onBindContent = {holder, position, element ->
+
+            }
+        )
+    }
     private val fontsAdapter by lazy {
         FontsAdapter(this,BPCFontProvider.getFontProvider(this))
     }
