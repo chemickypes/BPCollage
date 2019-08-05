@@ -316,9 +316,9 @@ class TextEntity(layer:Layer = TextLayer(),
         // init params - size, color, typeface
         textPaint.style = Paint.Style.FILL
         textPaint.textSize = canvasWidth * (textLayer.font?.size?:1f)
+        textPaint.bgColor = textLayer.font?.bgColor?:Color.TRANSPARENT
         textPaint.color = textLayer.font?.color?:Color.BLACK
         textPaint.typeface = fontProvider.getTypeface(textLayer.font?.typeface)
-        textPaint.bgColor = textLayer.font?.bgColor?:Color.TRANSPARENT
 
         // drawing text guide : http://ivankocijan.xyz/android-drawing-multiline-text-on-canvas/
         // Static layout which will be drawn on canvas
@@ -365,7 +365,12 @@ class TextEntity(layer:Layer = TextLayer(),
             }
 
             //draws static layout on canvas
+            drawColor(Color.TRANSPARENT,PorterDuff.Mode.CLEAR)
+            drawColor(textLayer.font?.bgColor?:Color.TRANSPARENT,PorterDuff.Mode.DST_OVER)
             sl.draw(this)
+
+
+
         }
 
 
