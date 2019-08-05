@@ -77,6 +77,12 @@ class GenericBottomSheet(context: Context,
 
     }
 
+    fun updateAll(listItem: List<Any>?, predicate: (Any?, Any?)-> Boolean = { _, _ ->true}){
+        genericBottomSheetAdapter?.updateAll(listItem?.map {
+            Item(it.toString(),it)
+        },predicate)
+    }
+
 
 
     internal class Item(val text:String, val element:Any)

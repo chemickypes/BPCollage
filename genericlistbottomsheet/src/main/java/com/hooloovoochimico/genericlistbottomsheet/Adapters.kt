@@ -36,6 +36,30 @@ internal class GenericBottomSheetAdapter(val context: Context,
         notifyDataSetChanged()
     }
 
+    fun updateAll(listItem: List<GenericBottomSheet.Item>?, predicate: (Any?, Any?) -> Boolean) {
+        var numberOfMod = 0
+        (0..(if(list.size >listItem?.size?:0)list.size else listItem?.size?:0)).forEach { pos ->
+            val storedEl = list.getOrNull(pos)
+            val newEl = listItem?.getOrNull(pos)
+
+            if(storedEl != null && newEl !=null){
+                if (predicate(storedEl.element,newEl.element)) {
+                    list.remove(storedEl)
+                    list.add(pos, newEl)
+                    numberOfMod += 1
+                }
+            }else if(newEl != null){
+                list.add(newEl)
+                numberOfMod += 1
+            }else{
+                list.remove(storedEl)
+                numberOfMod += 1
+            }
+        }
+
+        if(numberOfMod>0) notifyDataSetChanged()
+    }
+
 
     class GenericAdaperViewHolder(itemView: View): RecyclerView.ViewHolder(itemView){
 

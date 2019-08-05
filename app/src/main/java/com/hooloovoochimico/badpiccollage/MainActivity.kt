@@ -114,14 +114,17 @@ class MainActivity : AppCompatActivity(), TextEditorDialogFragment.OnTextLayerCa
                         text.text = getString(R.string.add_text)
                         imgView.setImageResource(R.drawable.ic_pencil)
                     }
+
+                    ActionModelsEnum.PICK_FROM_IMGFLIP -> {
+                        text.text = getString(R.string.pick_from_meme)
+                        imgView.setImageResource(R.drawable.ic_memes)
+                    }
                     else -> {}
 
                 }
 
             }
-            listItem = mutableListOf(ActionModels(ActionModelsEnum.PICK_FROM_CAMERA),
-                ActionModels(ActionModelsEnum.PICK_FROM_GALLERY), ActionModels(ActionModelsEnum.ADD_TEXT)
-            )
+            listItem = getAddAction(!imageView.isBaseImageLoaded)
 
             listener = { _, item:Any ->
 
@@ -205,6 +208,7 @@ class MainActivity : AppCompatActivity(), TextEditorDialogFragment.OnTextLayerCa
     }
 
     private fun openChoosePhoto(){
+        pickBottomSheet.updateAll(getAddAction(!imageView.isBaseImageLoaded))
        pickBottomSheet.show()
     }
 
