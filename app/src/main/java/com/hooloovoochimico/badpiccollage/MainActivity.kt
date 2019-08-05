@@ -20,6 +20,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.hooloovoochimico.badpiccollageimageview.*
 import com.hooloovoochimico.genericlistbottomsheet.GenericBottomSheet
 import com.hooloovoochimico.genericlistbottomsheet.getGenericBottomSheet
+import com.manzo.slang.extensions.goneIf
 import com.manzo.slang.navigation.toAdapter
 import com.miguelbcr.ui.rx_paparazzo2.RxPaparazzo
 import com.miguelbcr.ui.rx_paparazzo2.entities.FileData
@@ -164,6 +165,10 @@ class MainActivity : AppCompatActivity(), TextEditorDialogFragment.OnTextLayerCa
 
         }
 
+        add_image_hint.setOnClickListener {
+            openChoosePhoto()
+        }
+
         if(savedInstanceState!=null){
             imageView.restoreInstanceState(savedInstanceState)
         }else {
@@ -187,6 +192,12 @@ class MainActivity : AppCompatActivity(), TextEditorDialogFragment.OnTextLayerCa
         imageView.changeSelectedTextEntityText(text)
     }
 
+    override fun onResume() {
+        super.onResume()
+        add_image_hint.goneIf {
+            imageView.isBaseImageLoaded
+        }
+    }
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         return when(item?.itemId){
             R.id.action_add -> {
@@ -270,6 +281,10 @@ class MainActivity : AppCompatActivity(), TextEditorDialogFragment.OnTextLayerCa
                         } else {
                             imageView.setImageBitmap(bitmap)
                         }
+
+                        add_image_hint.goneIf {
+                            imageView.isBaseImageLoaded
+                        }
                     }
                 }
             }
@@ -307,7 +322,7 @@ class MainActivity : AppCompatActivity(), TextEditorDialogFragment.OnTextLayerCa
             })
             .setNegativeButton("Cancel") { p0, _ -> p0?.dismiss() }
             .attachAlphaSlideBar(true)
-            .attachBrightnessSlideBar(false)
+            .attachBrightnessSlideBar(true)
             .show()
     }
 

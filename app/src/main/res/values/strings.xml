@@ -7,4 +7,5 @@
     <string name="add_text">Text</string>
     <string name="double_tap_to_edit">Double tap to edit</string>
     <string name="pick_from_meme">Memes</string>
+    <string name="add_image_hint">Add Image</string>
 </resources>
