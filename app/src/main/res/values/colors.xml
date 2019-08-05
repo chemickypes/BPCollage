@@ -16,4 +16,5 @@
     <color name="transparent_black">#A6000000</color>
     <color name="black">#000000</color>
     <color name="deep_grey">#313131</color>
+    <color name="transparent_white">#55ffffff</color>
 </resources>
