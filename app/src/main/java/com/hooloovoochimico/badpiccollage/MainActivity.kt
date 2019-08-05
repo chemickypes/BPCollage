@@ -249,6 +249,9 @@ class MainActivity : AppCompatActivity(), TextEditorDialogFragment.OnTextLayerCa
         if(requestCode == MEME_REQ && resultCode ==  Activity.RESULT_OK){
             imageView.post {
                 imageView.setImageBitmap(imgVolatileStorage.memeSelected)
+                add_image_hint.goneIf {
+                    imageView.isBaseImageLoaded
+                }
             }
         }
     }
