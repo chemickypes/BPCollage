@@ -1,6 +1,8 @@
 package com.hooloovoochimico.badpiccollage
 
 import `in`.myinnos.savebitmapandsharelib.SaveAndShare
+import android.app.Activity
+import android.content.Intent
 import android.graphics.BitmapFactory
 import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
@@ -35,6 +37,7 @@ import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.plugins.RxJavaPlugins
 import io.reactivex.schedulers.Schedulers
+import org.koin.android.ext.android.inject
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
 import org.koin.dsl.module
@@ -75,6 +78,8 @@ class BadPicCollageApp: MultiDexApplication(){
 
 
 class MainActivity : AppCompatActivity(), TextEditorDialogFragment.OnTextLayerCallback {
+
+    private val imgVolatileStorage: ImageVolatileStorage by inject()
 
 
     private val textPanelAdapter by lazy {
@@ -238,38 +243,54 @@ class MainActivity : AppCompatActivity(), TextEditorDialogFragment.OnTextLayerCa
        pickBottomSheet.show()
     }
 
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        if(requestCode == MEME_REQ && resultCode ==  Activity.RESULT_OK){
+            imageView.post {
+                imageView.setImageBitmap(imgVolatileStorage.memeSelected)
+            }
+        }
+    }
+
     private fun openImagePicker(action:ActionModelsEnum){
 
+        if(action == ActionModelsEnum.PICK_FROM_IMGFLIP){
+            startActivityForResult(Intent(this, MemeActivity::class.java), MEME_REQ)
+        }else {
 
-        val df = with(RxPaparazzo.single(this)
-            .crop(UCrop.Options().apply {
-                setToolbarColor(ContextCompat.getColor(this@MainActivity,R.color.colorPrimary))
-                setActiveWidgetColor(ContextCompat.getColor(this@MainActivity,R.color.colorPrimary))
-            })){
-            when(action){
-                ActionModelsEnum.PICK_FROM_GALLERY -> {
-                    usingGallery()
-                }
-                 else -> {
-                    usingCamera()
+
+            val df = with(RxPaparazzo.single(this)
+                .crop(UCrop.Options().apply {
+                    setToolbarColor(ContextCompat.getColor(this@MainActivity, R.color.colorPrimary))
+                    setActiveWidgetColor(ContextCompat.getColor(this@MainActivity, R.color.colorPrimary))
+                })
+            ) {
+                when (action) {
+                    ActionModelsEnum.PICK_FROM_GALLERY -> {
+                        usingGallery()
+                    }
+                    else -> {
+                        usingCamera()
+                    }
+
                 }
 
             }
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe({ response ->
+
+                    //response.targetUI().showImage(response.data())
+
+                    response.targetUI().loadImage(response.data())
+
+                }, { throwable ->
+                    throwable.printStackTrace()
+                    Toast.makeText(applicationContext, "ERROR ", Toast.LENGTH_SHORT).show()
+                })
 
         }
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe ({ response ->
-
-                //response.targetUI().showImage(response.data())
-
-                response.targetUI().loadImage(response.data())
-
-            },{throwable ->
-                throwable.printStackTrace()
-                Toast.makeText(applicationContext, "ERROR ", Toast.LENGTH_SHORT).show()
-            })
-
 
 
     }
@@ -375,6 +396,11 @@ class MainActivity : AppCompatActivity(), TextEditorDialogFragment.OnTextLayerCa
 
     private fun openEditTextPanel(b: Boolean) {
         editTextPanel?.visibility = if(b)View.VISIBLE else View.GONE
+    }
+
+
+    companion object{
+        const val MEME_REQ = 2738
     }
 
 

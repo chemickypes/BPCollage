@@ -28,6 +28,8 @@ class MemeActivity : AppCompatActivity(),IMemeView{
        memesAdapter.dataset = memes?.map {
            it!!
        }?.toMutableList()?: mutableListOf()
+
+        memesAdapter.notifyDataSetChanged()
     }
 
     override fun showError() {
@@ -91,8 +93,8 @@ class MemeActivity : AppCompatActivity(),IMemeView{
         })
     }
 
-    override fun onCreate(savedInstanceState: Bundle?, persistentState: PersistableBundle?) {
-        super.onCreate(savedInstanceState, persistentState)
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
         setContentView(R.layout.meme_activity)
 
         meme_list.apply {
