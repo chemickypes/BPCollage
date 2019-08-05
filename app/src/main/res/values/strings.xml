@@ -8,4 +8,6 @@
     <string name="double_tap_to_edit">Double tap to edit</string>
     <string name="pick_from_meme">Memes</string>
     <string name="add_image_hint">Add Image</string>
+    <string name="no_meme_here">No meme here! :(</string>
+    <string name="network_error">Ops, Network Error!</string>
 </resources>

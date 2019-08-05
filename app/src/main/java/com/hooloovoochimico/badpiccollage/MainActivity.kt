@@ -35,6 +35,16 @@ import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.plugins.RxJavaPlugins
 import io.reactivex.schedulers.Schedulers
+import org.koin.android.ext.koin.androidContext
+import org.koin.core.context.startKoin
+import org.koin.dsl.module
+
+
+val appModule = module {
+    single { ImageVolatileStorage() }
+    factory { MemeLogic() }
+    factory { MemePresenter(get()) }
+}
 
 
 class BadPicCollageApp: MultiDexApplication(){
@@ -54,6 +64,11 @@ class BadPicCollageApp: MultiDexApplication(){
         BPCFontProvider.init(this) {
             hashMapOf("Montserrat" to "Montserrat-Regular.ttf","Nunito" to "Nunito-Regular.ttf",
                 "OpenSans Condensed" to "OpenSansCondensed-Light.ttf", "Roboto Mono" to "RobotoMono-Regular.ttf")
+        }
+
+        startKoin {
+            androidContext(this@BadPicCollageApp)
+            modules(appModule)
         }
     }
 }
