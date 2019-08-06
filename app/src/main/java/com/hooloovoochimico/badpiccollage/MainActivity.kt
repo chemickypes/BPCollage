@@ -12,6 +12,7 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
@@ -33,6 +34,7 @@ import com.skydoves.colorpickerview.ColorEnvelope
 import com.skydoves.colorpickerview.ColorPickerDialog
 import com.skydoves.colorpickerview.listeners.ColorEnvelopeListener
 import com.yalantis.ucrop.UCrop
+import dev.jai.genericdialog2.GenericDialog
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.plugins.RxJavaPlugins
@@ -226,9 +228,8 @@ class MainActivity : AppCompatActivity(), TextEditorDialogFragment.OnTextLayerCa
             }
 
             R.id.action_finish -> {
-                SaveAndShare.save(this,
-                    imageView.getThumbnailImage(),
-                    getImgName(),null,null)
+                saveImageAndShare()
+
 
                 true
             }
@@ -307,7 +308,7 @@ class MainActivity : AppCompatActivity(), TextEditorDialogFragment.OnTextLayerCa
             .subscribe { bitmap, error ->
 
                 if(error!= null){
-                    Toast.makeText(this,"ERROR RORJRIR",Toast.LENGTH_LONG).show()
+                    //Toast.makeText(this,"ERROR RORJRIR",Toast.LENGTH_LONG).show()
                 }else {
                     imageView.post {
                         if (imageView.isBaseImageLoaded) {
@@ -399,6 +400,24 @@ class MainActivity : AppCompatActivity(), TextEditorDialogFragment.OnTextLayerCa
 
     private fun openEditTextPanel(b: Boolean) {
         editTextPanel?.visibility = if(b)View.VISIBLE else View.GONE
+    }
+
+    private fun saveImageAndShare() {
+        if(imageView.isBaseImageLoaded){
+            SaveAndShare.save(this,
+                imageView.getThumbnailImage(),
+                getImgName(),null,null)
+        }else {
+            GenericDialog.Builder(this)
+                .setTitle(getString(R.string.to_fast_string)).setTitleAppearance(R.color.colorPrimary,18f)
+                .setMessage(getString(R.string.to_fast_message)).setMessageAppearance(R.color.text_color,14f)
+                .addNewButton(R.style.add_image_button_style) {
+                    openChoosePhoto()
+                }
+                .setButtonOrientation(LinearLayout.HORIZONTAL)
+                .setCancelable(true)
+                .generate()
+        }
     }
 
 

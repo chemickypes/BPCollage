@@ -10,4 +10,6 @@
     <string name="add_image_hint">Add Image</string>
     <string name="no_meme_here">No meme here! :(</string>
     <string name="network_error">Ops, Network Error!</string>
+    <string name="to_fast_string">Too fast!</string>
+    <string name="to_fast_message">If you want to share an image, you have to create one before.</string>
 </resources>
