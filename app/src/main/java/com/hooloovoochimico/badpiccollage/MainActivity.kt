@@ -409,8 +409,9 @@ class MainActivity : AppCompatActivity(), TextEditorDialogFragment.OnTextLayerCa
                 getImgName(),null,null)
         }else {
             GenericDialog.Builder(this)
-                .setTitle(getString(R.string.to_fast_string)).setTitleAppearance(R.color.colorPrimary,18f)
-                .setMessage(getString(R.string.to_fast_message)).setMessageAppearance(R.color.text_color,14f)
+                .setDialogTheme(R.style.v_i_dialog_style)
+                .setTitle(getString(R.string.to_fast_string)).setTitleAppearance(android.R.color.white,23f)
+                .setMessage(getString(R.string.to_fast_message)).setMessageAppearance(R.color.light_cyan,16f)
                 .addNewButton(R.style.add_image_button_style) {
                     openChoosePhoto()
                 }
