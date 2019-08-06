@@ -237,9 +237,9 @@ class ImageEntity(layer:Layer = Layer(), private  val bitmap: Bitmap,
     override fun getHeight(): Int  = bitmap.height
 
     override fun release() {
-        if (!bitmap.isRecycled) {
+        /*if (!bitmap.isRecycled) {
             bitmap.recycle()
-        }
+        }*/
     }
 
 }

@@ -17,7 +17,7 @@ fun getAddAction(init:Boolean = true): List<ActionModels> = mutableListOf(
     ActionModels(ActionModelsEnum.PICK_FROM_GALLERY)
 ).apply {
     add(ActionModels(if (init) ActionModelsEnum.ADD_BLANK_IMAGE else ActionModelsEnum.ADD_TEXT))
-    if (init) add(ActionModels(ActionModelsEnum.PICK_FROM_IMGFLIP))
+    add(ActionModels(ActionModelsEnum.PICK_FROM_IMGFLIP))
 }
 
 

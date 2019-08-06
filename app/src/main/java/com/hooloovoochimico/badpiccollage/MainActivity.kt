@@ -302,6 +302,7 @@ class MainActivity : AppCompatActivity(), TextEditorDialogFragment.OnTextLayerCa
 
                         addImageToImageView(Bitmap.createBitmap(1024, 1536, Bitmap.Config.ARGB_8888).apply {
                             eraseColor(envelope?.color?:Color.WHITE)
+                            //recycle()
                         })
                     }
 

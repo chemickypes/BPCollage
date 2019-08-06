@@ -156,8 +156,10 @@ class BadPicCollageImageView: ImageView {
      */
     private fun drawAllEntities(canvas: Canvas) {
 
-        entities.forEach {
-            it.draw(canvas,null)
+        if(isBaseImageLoaded) {
+            entities.forEach {
+                it.draw(canvas, null)
+            }
         }
     }
 
@@ -368,6 +370,8 @@ class BadPicCollageImageView: ImageView {
         for (entity in entities) {
             entity.release()
         }
+
+        entities.clear()
     }
 
     fun setEmptyState() {
@@ -375,9 +379,33 @@ class BadPicCollageImageView: ImageView {
     }
 
     fun clear() {
-        release()
-        setEmptyState()
-        setImageBitmap(null)
+
+
+        try {
+
+            unselectEntity()
+
+            deleteSelectedEntity()
+            release()
+        }catch (e:Exception){
+            e.printStackTrace()
+        }
+
+        try {
+            setEmptyState()
+        }catch (e:Exception){
+            e.printStackTrace()
+        }
+
+        setImageResource(android.R.color.transparent)
+
+
+
+        try {
+            updateUI()
+        }catch (e:Exception ){
+            e.printStackTrace()
+        }
     }
 
     // gesture detectors
