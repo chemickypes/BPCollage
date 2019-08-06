@@ -5,11 +5,15 @@ import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.os.PersistableBundle
+import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.manzo.slang.extensions.color
+import com.manzo.slang.extensions.goneIf
+import com.manzo.slang.extensions.invisibleIf
 import com.manzo.slang.navigation.toAdapter
 import com.orhanobut.logger.Logger
 import com.squareup.picasso.Picasso
@@ -103,11 +107,26 @@ class MemeActivity : AppCompatActivity(),IMemeView{
         }
 
     }
+
+    override fun showLoader(toShow: Boolean) {
+
+        progress_wheel.barColor = color(R.color.colorPrimary)
+        progress_wheel.goneIf {
+
+            if(toShow) progress_wheel.spin() else progress_wheel.stopSpinning()
+
+            !toShow
+
+
+        }
+    }
 }
 
 interface IMemeView{
     fun showList(memes: List<MemesItem?>?)
     fun showError()
+
+    fun showLoader(toShow: Boolean = true)
 
 }
 
@@ -119,7 +138,11 @@ class MemePresenter(private val logic:MemeLogic){
     private var view: IMemeView? = null
 
     fun getMemes() {
+
+        view?.showLoader()
         disposable = logic.getMemes().subscribe { bean, ex ->
+
+            view?.showLoader(false)
             if(bean!= null){
             view?.showList(bean.data?.memes)
             }else {
