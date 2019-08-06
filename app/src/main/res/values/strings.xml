@@ -14,4 +14,6 @@
     <string name="to_fast_message">If you want to share an image, you have to create one before.</string>
     <string name="hey_oh">Hey!</string>
     <string name="do_you_want_to_lose">Do you want to lose all the changes made?</string>
+    <string name="blank_image">Blank image</string>
+    <string name="choose_background_of_image">Choose background color</string>
 </resources>

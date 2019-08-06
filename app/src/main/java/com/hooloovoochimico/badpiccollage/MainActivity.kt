@@ -3,6 +3,7 @@ package com.hooloovoochimico.badpiccollage
 import `in`.myinnos.savebitmapandsharelib.SaveAndShare
 import android.app.Activity
 import android.content.Intent
+import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
@@ -24,6 +25,7 @@ import com.hooloovoochimico.badpiccollageimageview.*
 import com.hooloovoochimico.genericlistbottomsheet.GenericBottomSheet
 import com.hooloovoochimico.genericlistbottomsheet.getGenericBottomSheet
 import com.manzo.slang.extensions.goneIf
+import com.manzo.slang.extensions.string
 import com.manzo.slang.navigation.toAdapter
 import com.miguelbcr.ui.rx_paparazzo2.RxPaparazzo
 import com.miguelbcr.ui.rx_paparazzo2.entities.FileData
@@ -142,6 +144,11 @@ class MainActivity : AppCompatActivity(), TextEditorDialogFragment.OnTextLayerCa
                         text.text = getString(R.string.pick_from_meme)
                         imgView.setImageResource(R.drawable.ic_memes)
                     }
+
+                    ActionModelsEnum.ADD_BLANK_IMAGE -> {
+                        text.text = string(R.string.blank_image)
+                        imgView.setImageResource(R.drawable.ic_blank_image)
+                    }
                     else -> {}
 
                 }
@@ -248,12 +255,7 @@ class MainActivity : AppCompatActivity(), TextEditorDialogFragment.OnTextLayerCa
         super.onActivityResult(requestCode, resultCode, data)
 
         if(requestCode == MEME_REQ && resultCode ==  Activity.RESULT_OK){
-            imageView.post {
-                imageView.setImageBitmap(imgVolatileStorage.memeSelected)
-                add_image_hint.goneIf {
-                    imageView.isBaseImageLoaded
-                }
-            }
+            addImageToImageView(imgVolatileStorage.memeSelected!!)
         }
     }
 
@@ -292,12 +294,25 @@ class MainActivity : AppCompatActivity(), TextEditorDialogFragment.OnTextLayerCa
     }
     private fun openImagePicker(action:ActionModelsEnum){
 
-        if(action == ActionModelsEnum.PICK_FROM_IMGFLIP){
-            startActivityForResult(Intent(this, MemeActivity::class.java), MEME_REQ)
-        }else {
+        when (action) {
+            ActionModelsEnum.ADD_BLANK_IMAGE -> ColorPickerDialog.Builder(this@MainActivity)
+                .setTitle(string(R.string.choose_background_of_image))
+                .setPositiveButton("Select", object : ColorEnvelopeListener {
+                    override fun onColorSelected(envelope: ColorEnvelope?, fromUser: Boolean) {
 
+                        addImageToImageView(Bitmap.createBitmap(1024, 1536, Bitmap.Config.ARGB_8888).apply {
+                            eraseColor(envelope?.color?:Color.WHITE)
+                        })
+                    }
 
-            val df = with(RxPaparazzo.single(this)
+                })
+                .setNegativeButton("Cancel") { p0, _ -> p0?.dismiss() }
+                .attachAlphaSlideBar(true)
+                .attachBrightnessSlideBar(false)
+                .show()
+            ActionModelsEnum.PICK_FROM_IMGFLIP -> startActivityForResult(Intent(this, MemeActivity::class.java), MEME_REQ)
+            else ->
+                with(RxPaparazzo.single(this)
                 .crop(UCrop.Options().apply {
                     setToolbarColor(ContextCompat.getColor(this@MainActivity, R.color.colorPrimary))
                     setActiveWidgetColor(ContextCompat.getColor(this@MainActivity, R.color.colorPrimary))
@@ -326,7 +341,6 @@ class MainActivity : AppCompatActivity(), TextEditorDialogFragment.OnTextLayerCa
                     throwable.printStackTrace()
                     Toast.makeText(applicationContext, "ERROR ", Toast.LENGTH_SHORT).show()
                 })
-
         }
 
 
@@ -343,24 +357,28 @@ class MainActivity : AppCompatActivity(), TextEditorDialogFragment.OnTextLayerCa
                 if(error!= null){
                     //Toast.makeText(this,"ERROR RORJRIR",Toast.LENGTH_LONG).show()
                 }else {
-                    imageView.post {
-                        if (imageView.isBaseImageLoaded) {
-                            imageView.addEntityAndPosition(
-                                ImageEntity(
-                                    bitmap = bitmap,
-                                    canvasWidth = imageView.width, canvasHeight = imageView.height
-                                )
-                            )
-                        } else {
-                            imageView.setImageBitmap(bitmap)
-                        }
-
-                        add_image_hint.goneIf {
-                            imageView.isBaseImageLoaded
-                        }
-                    }
+                    addImageToImageView(bitmap)
                 }
             }
+    }
+
+    private fun addImageToImageView(bitmap: Bitmap){
+        imageView.post {
+            if (imageView.isBaseImageLoaded) {
+                imageView.addEntityAndPosition(
+                    ImageEntity(
+                        bitmap = bitmap,
+                        canvasWidth = imageView.width, canvasHeight = imageView.height
+                    )
+                )
+            } else {
+                imageView.setImageBitmap(bitmap)
+            }
+
+            add_image_hint.goneIf {
+                imageView.isBaseImageLoaded
+            }
+        }
     }
 
     private fun addTextDefault() {
