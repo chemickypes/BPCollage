@@ -257,6 +257,39 @@ class MainActivity : AppCompatActivity(), TextEditorDialogFragment.OnTextLayerCa
         }
     }
 
+    override fun onBackPressed() {
+
+        if(imageView.isBaseImageLoaded){
+
+            GenericDialog.Builder(this)
+                .setDialogTheme(R.style.v_i_dialog_style)
+                .setTitle(getString(R.string.hey_oh)).setTitleAppearance(android.R.color.white,23f)
+                .setMessage(getString(R.string.do_you_want_to_lose)).setMessageAppearance(R.color.light_cyan,16f)
+
+                .addNewButton(R.style.close_app_button) {
+                    //openChoosePhoto()
+                    super.onBackPressed()
+                }
+
+                .addNewButton(R.style.no_button) {
+                    //openChoosePhoto()
+
+                }
+
+                .addNewButton(R.style.yes_button) {
+                    //openChoosePhoto()
+                    clearImage()
+                }
+
+                .setButtonOrientation(LinearLayout.HORIZONTAL)
+                .setCancelable(true)
+                .generate()
+
+        }else {
+            super.onBackPressed()
+        }
+
+    }
     private fun openImagePicker(action:ActionModelsEnum){
 
         if(action == ActionModelsEnum.PICK_FROM_IMGFLIP){
@@ -421,10 +454,18 @@ class MainActivity : AppCompatActivity(), TextEditorDialogFragment.OnTextLayerCa
         }
     }
 
+    private fun clearImage(){
+        imageView.clear()
+        add_image_hint.goneIf {
+            imageView.isBaseImageLoaded
+        }
+    }
+
 
     companion object{
         const val MEME_REQ = 2738
     }
+
 
 
 

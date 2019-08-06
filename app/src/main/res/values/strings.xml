@@ -12,4 +12,6 @@
     <string name="network_error">Ops, Network Error!</string>
     <string name="to_fast_string">Too fast!</string>
     <string name="to_fast_message">If you want to share an image, you have to create one before.</string>
+    <string name="hey_oh">Hey!</string>
+    <string name="do_you_want_to_lose">Do you want to lose all the changes made?</string>
 </resources>

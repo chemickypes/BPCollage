@@ -13,7 +13,8 @@
         <item name="android:textColor">@color/text_color</item>
         <item name="android:textSize">16sp</item>
     </style>
-    <style name="add_image_button_style" >
+
+    <style name="custom_dialog_button" >
         <item name="android:text">Add Image</item>
         <item name="android:textColor">@color/transparent_white</item>
         <item name="android:background">@drawable/item_action_background</item>
@@ -22,6 +23,25 @@
         <item name="android:textSize">18sp</item>
         <item name="android:textAllCaps">true</item>
         <item name="android:textStyle">bold</item>
+    </style>
+    <style name="add_image_button_style" parent="custom_dialog_button">
+        <item name="android:text">Add Image</item>
+    </style>
+
+    <style name="yes_button" parent="custom_dialog_button" >
+        <item name="android:text">YES</item>
+
+    </style>
+
+    <style name="no_button" parent="custom_dialog_button" >
+        <item name="android:text">NO</item>
+
+    </style>
+
+    <style name="close_app_button" parent="custom_dialog_button" >
+        <item name="android:text">CLOSE</item>
+        <item name="android:textColor">@color/colorPrimaryDark</item>
+
     </style>
     <style name="v_i_dialog_style">
         <item name="android:windowIsFloating">true</item>

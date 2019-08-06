@@ -185,18 +185,7 @@ class BadPicCollageImageView: ImageView {
             drawAllEntities(this)
         }
 
-        //return (drawable as  BitmapDrawable).bitmap
 
-
-        /*//val bmp = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888)
-        val bmp = imgStore.bitmap
-        // IMPORTANT: always create white background, cos if the image is saved in JPEG format,
-        // which doesn't have transparent pixels, the background will be black
-        bmp.eraseColor(Color.WHITE)
-        val canvas = Canvas(bmp)
-        drawAllEntities(canvas)
-
-        return bmp*/
     }
 
     private fun updateUI() {
@@ -383,6 +372,12 @@ class BadPicCollageImageView: ImageView {
 
     fun setEmptyState() {
         imgStore.clear()
+    }
+
+    fun clear() {
+        release()
+        setEmptyState()
+        setImageBitmap(null)
     }
 
     // gesture detectors
