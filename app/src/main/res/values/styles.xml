@@ -15,7 +15,7 @@
     </style>
     <style name="add_image_button_style" >
         <item name="android:text">Add Image</item>
-        <item name="android:textColor">@color/light_cyan</item>
+        <item name="android:textColor">@color/transparent_white</item>
         <item name="android:background">@drawable/item_action_background</item>
         <item name="android:padding">8dp</item>
         <item name="android:gravity">center</item>
