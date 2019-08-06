@@ -25,7 +25,7 @@
     </style>
     <style name="v_i_dialog_style">
         <item name="android:windowIsFloating">true</item>
-        <item name="android:background">@color/colorPrimary</item>
+        <item name="android:background">@color/colorPrimaryLightPix</item>
     </style>
 
 
