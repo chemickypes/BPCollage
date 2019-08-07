@@ -8,6 +8,9 @@ import android.graphics.BitmapFactory
 import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.text.Spannable
+import android.text.SpannableStringBuilder
+import android.text.style.TypefaceSpan
 import kotlinx.android.synthetic.main.activity_main.*
 import android.view.Menu
 import android.view.MenuItem
@@ -18,6 +21,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
+import androidx.core.content.res.ResourcesCompat
 import androidx.multidex.MultiDexApplication
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -312,36 +316,42 @@ class MainActivity : AppCompatActivity(), TextEditorDialogFragment.OnTextLayerCa
                 .attachBrightnessSlideBar(false)
                 .show()
             ActionModelsEnum.PICK_FROM_IMGFLIP -> startActivityForResult(Intent(this, MemeActivity::class.java), MEME_REQ)
-            else ->
+            else ->{
+
                 with(RxPaparazzo.single(this)
-                .crop(UCrop.Options().apply {
-                    setToolbarColor(ContextCompat.getColor(this@MainActivity, R.color.colorPrimary))
-                    setActiveWidgetColor(ContextCompat.getColor(this@MainActivity, R.color.colorPrimary))
-                })
-            ) {
-                when (action) {
-                    ActionModelsEnum.PICK_FROM_GALLERY -> {
-                        usingGallery()
-                    }
-                    else -> {
-                        usingCamera()
+                    .crop(UCrop.Options().apply {
+                        setToolbarColor(ContextCompat.getColor(this@MainActivity, R.color.colorPrimary))
+                        setActiveWidgetColor(ContextCompat.getColor(this@MainActivity, R.color.colorPrimary))
+                        setFreeStyleCropEnabled(true)
+                        setToolbarTitle(getCropImageTitle(this@MainActivity))
+                    })
+                ) {
+                    when (action) {
+                        ActionModelsEnum.PICK_FROM_GALLERY -> {
+                            usingGallery()
+                        }
+                        else -> {
+                            usingCamera()
+                        }
+
                     }
 
                 }
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .subscribe({ response ->
+
+                        //response.targetUI().showImage(response.data())
+
+                        response.targetUI().loadImage(response.data())
+
+                    }, { throwable ->
+                        throwable.printStackTrace()
+                        Toast.makeText(applicationContext, "ERROR ", Toast.LENGTH_SHORT).show()
+                    })
 
             }
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe({ response ->
 
-                    //response.targetUI().showImage(response.data())
-
-                    response.targetUI().loadImage(response.data())
-
-                }, { throwable ->
-                    throwable.printStackTrace()
-                    Toast.makeText(applicationContext, "ERROR ", Toast.LENGTH_SHORT).show()
-                })
         }
 
 
