@@ -194,7 +194,8 @@ class MainActivity : AppCompatActivity(), TextEditorDialogFragment.OnTextLayerCa
         }
 
         add_image_hint.setOnClickListener {
-            openChoosePhoto()
+            //TODO openChoosePhoto()
+            startActivity(Intent(this,InfoActivity::class.java))
         }
 
         if(savedInstanceState!=null){

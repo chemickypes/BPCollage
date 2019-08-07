@@ -16,4 +16,7 @@
     <string name="do_you_want_to_lose">Do you want to lose all the changes made?</string>
     <string name="blank_image">Blank image</string>
     <string name="choose_background_of_image">Choose background color</string>
+    <string name="info_app">BPCollage will be free forever and you\'ll never see any kind of Google Ads. So, if you
+        want, you can support me by offering me a coffe. Thanks :).
+    </string>
 </resources>
