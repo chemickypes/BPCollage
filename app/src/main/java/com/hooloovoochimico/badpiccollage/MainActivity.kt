@@ -8,9 +8,6 @@ import android.graphics.BitmapFactory
 import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.text.Spannable
-import android.text.SpannableStringBuilder
-import android.text.style.TypefaceSpan
 import kotlinx.android.synthetic.main.activity_main.*
 import android.view.Menu
 import android.view.MenuItem
@@ -21,7 +18,6 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
-import androidx.core.content.res.ResourcesCompat
 import androidx.multidex.MultiDexApplication
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -103,6 +99,8 @@ class MainActivity : AppCompatActivity(), TextEditorDialogFragment.OnTextLayerCa
                             ActionModelsEnum.CHOOSE_BG_TEXT_COLOR -> R.drawable.ic_change_bgcolor_red
                             ActionModelsEnum.CHOOSE_TEXT_FONT -> R.drawable.ic_change_font_red
                             ActionModelsEnum.EDIT_TEXT -> R.drawable.ic_pencil
+                            ActionModelsEnum.FLIP -> R.drawable.ic_flip
+                            ActionModelsEnum.DELETE -> R.drawable.ic_delete
                             ActionModelsEnum.CANCEL -> R.drawable.ic_cancel_red
                             else -> R.drawable.ic_add_red
 
@@ -186,14 +184,11 @@ class MainActivity : AppCompatActivity(), TextEditorDialogFragment.OnTextLayerCa
 
         imageView.motionViewCallback = object : BadPicCollageImageView.MotionViewCallback{
             override fun onEntitySelected(entity: MotionEntity?) {
-                openEditTextPanel(entity is TextEntity)
+                openEditPanel(true, entity is TextEntity)
             }
 
             override fun onEntityDoubleTap(entity: MotionEntity) {
-                if(entity is TextEntity){
-                    TextEditorDialogFragment.getInstance(entity.getTextLayer().text?:"")
-                        .show(supportFragmentManager,TextEditorDialogFragment::class.java.name)
-                }
+               openTextEditorDialog(entity)
             }
 
         }
@@ -403,7 +398,7 @@ class MainActivity : AppCompatActivity(), TextEditorDialogFragment.OnTextLayerCa
                     fontProvider = BPCFontProvider.getFontProvider(this))
             )
 
-            openEditTextPanel(true)
+            openEditPanel(true)
         }
 
 
@@ -448,11 +443,17 @@ class MainActivity : AppCompatActivity(), TextEditorDialogFragment.OnTextLayerCa
             ActionModelsEnum.CHOOSE_TEXT_COLOR -> openColorPicker(true)
             ActionModelsEnum.CHOOSE_BG_TEXT_COLOR -> openColorPicker(false)
             ActionModelsEnum.CHOOSE_TEXT_FONT -> openFontDialog()
+            ActionModelsEnum.DELETE -> {
+                imageView.deleteSelectedEntity()
+                openEditPanel(false)
+            }
+            ActionModelsEnum.FLIP -> imageView.flipSelectedEntity()
             ActionModelsEnum.EDIT_TEXT -> {
+                openTextEditorDialog(imageView.selectedEntity)
             }
             ActionModelsEnum.CANCEL -> {
                 imageView.unselectEntity()
-                openEditTextPanel(false)
+                openEditPanel(false)
             }
             else -> {
             }
@@ -460,8 +461,18 @@ class MainActivity : AppCompatActivity(), TextEditorDialogFragment.OnTextLayerCa
     }
 
 
-    private fun openEditTextPanel(b: Boolean) {
-        editTextPanel?.visibility = if(b)View.VISIBLE else View.GONE
+    private fun openTextEditorDialog(entity: MotionEntity?){
+        if(entity is TextEntity){
+            TextEditorDialogFragment.getInstance(entity.getTextLayer().text?:"")
+                .show(supportFragmentManager,TextEditorDialogFragment::class.java.name)
+        }
+    }
+
+
+    private fun openEditPanel(toShow: Boolean, textEditing:Boolean = true) {
+
+        if(toShow) textPanelAdapter.dataset = (if(textEditing) getTextActions() else getImageActions()).toMutableList()
+        editTextPanel?.visibility = if(toShow)View.VISIBLE else View.GONE
     }
 
     private fun saveImageAndShare() {
