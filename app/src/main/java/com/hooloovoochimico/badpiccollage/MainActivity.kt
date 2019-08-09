@@ -25,6 +25,7 @@ import com.hooloovoochimico.badpiccollageimageview.*
 import com.hooloovoochimico.genericlistbottomsheet.GenericBottomSheet
 import com.hooloovoochimico.genericlistbottomsheet.getGenericBottomSheet
 import com.manzo.slang.extensions.goneIf
+import com.manzo.slang.extensions.startActivity
 import com.manzo.slang.extensions.string
 import com.manzo.slang.navigation.toAdapter
 import com.miguelbcr.ui.rx_paparazzo2.RxPaparazzo
@@ -237,6 +238,11 @@ class MainActivity : AppCompatActivity(), TextEditorDialogFragment.OnTextLayerCa
             R.id.action_finish -> {
                 saveImageAndShare()
 
+
+                true
+            }
+            R.id.action_info -> {
+                startActivity<InfoActivity>()
 
                 true
             }

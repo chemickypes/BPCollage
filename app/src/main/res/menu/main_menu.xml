@@ -13,4 +13,8 @@
             android:icon="@drawable/ic_check_end"
             app:showAsAction="always"/>
 
+    <item android:id="@+id/action_info"
+          android:title="@string/info"
+          app:showAsAction="never"/>
+
 </menu>
