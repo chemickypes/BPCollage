@@ -185,7 +185,7 @@ class MainActivity : AppCompatActivity(), TextEditorDialogFragment.OnTextLayerCa
 
         imageView.motionViewCallback = object : BadPicCollageImageView.MotionViewCallback{
             override fun onEntitySelected(entity: MotionEntity?) {
-                openEditPanel(true, entity is TextEntity)
+                openEditPanel(entity != null, entity is TextEntity)
             }
 
             override fun onEntityDoubleTap(entity: MotionEntity) {
