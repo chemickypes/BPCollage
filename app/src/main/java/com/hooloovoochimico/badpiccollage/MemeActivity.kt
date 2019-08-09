@@ -5,6 +5,7 @@ import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.os.PersistableBundle
+import android.view.MenuItem
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
@@ -101,11 +102,22 @@ class MemeActivity : AppCompatActivity(),IMemeView{
         super.onCreate(savedInstanceState)
         setContentView(R.layout.meme_activity)
 
+        actionBar?.setDisplayShowHomeEnabled(true)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+
         meme_list.apply {
             layoutManager = LinearLayoutManager(this@MemeActivity)
             adapter = memesAdapter
         }
 
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+
+        if(item?.itemId == android.R.id.home ){
+            super.onBackPressed()
+        }
+        return super.onOptionsItemSelected(item)
     }
 
     override fun showLoader(toShow: Boolean) {

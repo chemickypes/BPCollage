@@ -5,6 +5,7 @@ import android.content.Intent
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.MenuItem
 import com.manzo.slang.extensions.getAppVersion
 import com.manzo.slang.extensions.startActivity
 import kotlinx.android.synthetic.main.activity_info.*
@@ -14,6 +15,9 @@ class InfoActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_info)
+
+        actionBar?.setDisplayShowHomeEnabled(true)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         val versionText = "v.${getAppVersion()}"
         version_tv.text = versionText
@@ -42,6 +46,14 @@ class InfoActivity : AppCompatActivity() {
                 data = Uri.parse(url)
             }.start(this)
         }?: false
+
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+
+        if(item?.itemId == android.R.id.home ){
+            super.onBackPressed()
+        }
+        return super.onOptionsItemSelected(item)
+    }
 
 
 }
