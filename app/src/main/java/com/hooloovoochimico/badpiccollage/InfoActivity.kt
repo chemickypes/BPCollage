@@ -22,20 +22,20 @@ class InfoActivity : AppCompatActivity() {
         val versionText = "v.${getAppVersion()}"
         version_tv.text = versionText
 
-        buy_me_coffee_button.setOnClickListener {
+        /*buy_me_coffee_button.setOnClickListener {
             showBrowser("https://ko-fi.com/angelomoroni")
-        }
+        }*/
 
         credits_button.setOnClickListener {
-            showBrowser("https://github.com/chemickypes/BPCollage/blob/master/Credits.md")
+            showBrowser("http://bit.ly/bpc_credits")
         }
 
         github_button.setOnClickListener {
-            showBrowser("https://github.com/chemickypes/BPCollage")
+            showBrowser("http://bit.ly/bpc_github")
         }
 
         license_button.setOnClickListener {
-            showBrowser("https://github.com/chemickypes/BPCollage/blob/master/LICENSE.md")
+            showBrowser("http://bit.ly/bpc_licnse")
         }
 
     }
