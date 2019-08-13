@@ -74,5 +74,3 @@ The App is very simple beacuse there are 3 important modules on which everything
  If you want to help me and improve the code you can fork this repo and make pull request. If you find a bug or want to request an improvement open an issue. 
 
 
-### Future Implementations
- * https://github.com/mbieniek/FacebookImagePicker
