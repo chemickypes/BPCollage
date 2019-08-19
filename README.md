@@ -2,6 +2,8 @@
 # Bad Pic Collage
 This app let you make bad collage using your pics. 🚀
 
+[<img src="google-play-badge.png" alt="Google Play Button" width=250 />](http://bit.ly/bpc_playstore)
+
 ## First of All
 We start with an example: take, from the web, a picture of your favorite Basket player and them apply you face on his one. 
 Is the result very ugly? Good, the main goal of this application is that! 💪
