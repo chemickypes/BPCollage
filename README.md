@@ -40,7 +40,9 @@ Stickers and texsts can be flipped, resized, moved, rotated and deleted (but I t
 
 ## Where download this magnificent app?
 From PlayStore, sure.
-Click oh this link --> [BPCollage on Play Store](https://play.google.com/store/apps/details?id=com.hooloovoochimico.badpiccollage)
+Click on the following link 👇
+
+[<img src="google-play-badge.png" alt="Google Play Button" width=200 />](http://bit.ly/bpc_playstore)
 
 ## Donate
 
