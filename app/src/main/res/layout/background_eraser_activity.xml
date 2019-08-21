@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                                                   xmlns:app="http://schemas.android.com/apk/res-auto"
+                                                   xmlns:wheel="http://schemas.android.com/tools"
+                                                   android:orientation="vertical"
+                                                   android:layout_width="match_parent"
+                                                   android:layout_height="match_parent"
+android:background="@color/colorPrimaryLightPix">
+
+    <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/text_action_panel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="visible"
+
+            android:background="@color/transparent_white"
+            android:maxHeight="60dp" app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" app:layout_constraintStart_toStartOf="parent"/>
+
+    <com.hooloovoochimico.badpiccollageimageview.DrawView android:layout_width="match_parent"
+                                                          android:layout_height="0dp"
+                                                          android:layout_marginTop="8dp"
+                                                          app:layout_constraintTop_toBottomOf="@+id/text_action_panel"
+                                                          app:layout_constraintEnd_toEndOf="parent"
+                                                          app:layout_constraintStart_toStartOf="parent"
+                                                          android:layout_marginStart="8dp"
+                                                          android:layout_marginEnd="8dp"
+                                                          android:layout_marginBottom="8dp"
+                                                          app:layout_constraintBottom_toBottomOf="parent"
+                                                          android:id="@+id/draw_view"/>
+
+    <com.developer.progressx.ProgressWheel
+            android:id="@+id/progress_wheel"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            wheel:matProg_barColor="#F44336"
+            wheel:matProg_progressIndeterminate="true"
+            app:layout_constraintEnd_toEndOf="parent" android:layout_marginStart="8dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" android:layout_marginBottom="8dp"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

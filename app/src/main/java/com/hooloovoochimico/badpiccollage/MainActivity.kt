@@ -195,7 +195,9 @@ class MainActivity : AppCompatActivity(), TextEditorDialogFragment.OnTextLayerCa
         }
 
         add_image_hint.setOnClickListener {
-            openChoosePhoto()
+            //openChoosePhoto()
+
+            startActivity<BackgroundEraserActivity>()
         }
 
         if(savedInstanceState!=null){

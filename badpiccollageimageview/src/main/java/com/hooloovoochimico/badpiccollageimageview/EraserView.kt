@@ -14,12 +14,13 @@ import android.util.Pair
 import android.view.MotionEvent
 import android.view.View
 import android.widget.Button
+import androidx.core.graphics.withSave
 
 import java.lang.ref.WeakReference
 import java.util.Stack
 
 
-internal class DrawView(c: Context, attrs: AttributeSet) : View(c, attrs) {
+class DrawView(c: Context, attrs: AttributeSet) : View(c, attrs) {
 
     private var livePath: Path? = null
     private var pathPaint: Paint? = null
@@ -52,10 +53,13 @@ internal class DrawView(c: Context, attrs: AttributeSet) : View(c, attrs) {
         pathPaint = Paint(Paint.ANTI_ALIAS_FLAG)
         pathPaint!!.isDither = true
         pathPaint!!.color = Color.TRANSPARENT
-        pathPaint!!.xfermode = PorterDuffXfermode(PorterDuff.Mode.CLEAR)
+        pathPaint!!.xfermode = PorterDuffXfermode(PorterDuff.Mode.SRC_OUT)
         pathPaint!!.style = Paint.Style.STROKE
         pathPaint!!.strokeJoin = Paint.Join.ROUND
         pathPaint!!.strokeCap = Paint.Cap.ROUND
+
+        isDrawingCacheEnabled = true
+        setLayerType(View.LAYER_TYPE_HARDWARE, null)
     }
 
     fun setButtons(undoButton: Button, redoButton: Button) {
@@ -72,24 +76,24 @@ internal class DrawView(c: Context, attrs: AttributeSet) : View(c, attrs) {
 
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
-        canvas.save()
 
-        if (currentBitmap != null) {
+        canvas.withSave {
+            if (currentBitmap != null) {
 
-            canvas.drawBitmap(this.currentBitmap!!, 0f, 0f, null)
+                canvas.drawBitmap(currentBitmap!!, 0f, 0f, null)
 
-            for (action in cuts) {
-                if (action.first != null) {
-                    canvas.drawPath(action.first!!.first, action.first!!.second)
+                for (action in cuts) {
+                    if (action.first != null) {
+                        canvas.drawPath(action.first!!.first, action.first!!.second)
+                    }
                 }
-            }
 
-            if (currentAction == DrawViewAction.MANUAL_CLEAR) {
-                canvas.drawPath(livePath!!, pathPaint!!)
+                if (currentAction == DrawViewAction.MANUAL_CLEAR) {
+                    canvas.drawPath(livePath!!, pathPaint!!)
+                }
             }
         }
 
-        canvas.restore()
     }
 
     private fun touchStart(x: Float, y: Float) {
@@ -97,7 +101,7 @@ internal class DrawView(c: Context, attrs: AttributeSet) : View(c, attrs) {
         pathY = y
 
         undoneCuts.clear()
-        redoButton!!.isEnabled = false
+        redoButton?.isEnabled = false
 
         if (currentAction == DrawViewAction.AUTO_CLEAR) {
             AutomaticPixelClearingTask(this).execute(x.toInt(), y.toInt())
@@ -126,7 +130,7 @@ internal class DrawView(c: Context, attrs: AttributeSet) : View(c, attrs) {
             livePath!!.lineTo(pathX, pathY)
             cuts.push(Pair(Pair(livePath!!, pathPaint!!), null))
             livePath = Path()
-            undoButton!!.isEnabled = true
+            undoButton?.isEnabled = true
         }
     }
 
@@ -143,10 +147,10 @@ internal class DrawView(c: Context, attrs: AttributeSet) : View(c, attrs) {
             }
 
             if (cuts.isEmpty()) {
-                undoButton!!.isEnabled = false
+                undoButton?.isEnabled = false
             }
 
-            redoButton!!.isEnabled = true
+            redoButton?.isEnabled = true
 
             invalidate()
         }
@@ -166,10 +170,10 @@ internal class DrawView(c: Context, attrs: AttributeSet) : View(c, attrs) {
             }
 
             if (undoneCuts.isEmpty()) {
-                redoButton!!.isEnabled = false
+                redoButton?.isEnabled = false
             }
 
-            undoButton!!.isEnabled = true
+            undoButton?.isEnabled = true
 
             invalidate()
         }
@@ -209,6 +213,10 @@ internal class DrawView(c: Context, attrs: AttributeSet) : View(c, attrs) {
     }
 
     fun setBitmap(bitmap: Bitmap) {
+
+        pathPaint!!.color = Color.TRANSPARENT
+
+
         this.currentBitmap = bitmap
         resizeBitmap(width, height)
     }
