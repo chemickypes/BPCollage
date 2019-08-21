@@ -7,6 +7,13 @@ import android.graphics.PointF
 import androidx.annotation.NonNull
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.applyCanvas
+import android.R.attr.bitmap
+import android.graphics.Matrix
+import android.graphics.Paint
+
+
+
+
 
 
 fun getBitmapFromVectorDrawable(context: Context, drawableId: Int): Bitmap {
@@ -18,6 +25,28 @@ fun getBitmapFromVectorDrawable(context: Context, drawableId: Int): Bitmap {
     ).applyCanvas {
         drawable.setBounds(0, 0, width, height)
         drawable.draw(this)
+    }
+}
+
+fun getResizedBitmap(bitmap: Bitmap, width: Int, height: Int): Bitmap{
+
+    val originalWidth = bitmap.width.toFloat()
+    val originalHeight = bitmap.height.toFloat()
+
+    val scale = width / originalWidth
+
+    val xTranslation = 0.0f
+    val yTranslation = (height - originalHeight * scale) / 2.0f
+
+    val transformation = Matrix()
+    transformation.postTranslate(xTranslation, yTranslation)
+    transformation.preScale(scale, scale)
+
+    val paint = Paint()
+    paint.isFilterBitmap = true
+
+   return  Bitmap.createBitmap(width,height, Bitmap.Config.ARGB_8888).applyCanvas {
+        drawBitmap(bitmap,transformation,paint)
     }
 }
 
