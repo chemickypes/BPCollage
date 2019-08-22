@@ -5,7 +5,9 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.ImageView
+import android.widget.LinearLayout
 import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.hooloovoochimico.badpiccollageimageview.DrawView
 import com.manzo.slang.extensions.string
 import com.manzo.slang.navigation.toAdapter
@@ -46,22 +48,19 @@ class BackgroundEraserActivity : AppCompatActivity(){
                     when(element.action){
                         ActionModelsEnum.ZOOM -> {
 
-                            if(!holder.itemView.isActivated) {
-                                enableButton(ActionModelsEnum.ZOOM)
-                                activateGestureView()
-                            }
+                            enableButton(ActionModelsEnum.ZOOM)
+                            activateGestureView()
+
                         }
                         ActionModelsEnum.MANUAL_ERASE -> {
-                            if(!holder.itemView.isActivated) {
-                                enableButton(ActionModelsEnum.MANUAL_ERASE)
-                                deactivateGestureView()
-                            }
+                            enableButton(ActionModelsEnum.MANUAL_ERASE)
+                            deactivateGestureView()
+
                         }
                         ActionModelsEnum.MAGIC_ERASE -> {
-                            if(!holder.itemView.isActivated) {
-                                enableButton(ActionModelsEnum.MAGIC_ERASE)
-                                deactivateGestureView()
-                            }
+                            enableButton(ActionModelsEnum.MAGIC_ERASE)
+                            deactivateGestureView()
+
                         }
                         ActionModelsEnum.UNDO -> draw_view.undo()
                         ActionModelsEnum.REDO -> draw_view.redo()
@@ -108,6 +107,11 @@ class BackgroundEraserActivity : AppCompatActivity(){
         supportActionBar?.title = string(R.string.erase_background)
 
 
+        text_action_panel.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL,false)
+        text_action_panel.adapter = erasePanelAdapter
+
+
+        draw_view.initDrawView()
 
         draw_view.setStrokeWidth(40)
 
@@ -142,7 +146,7 @@ class BackgroundEraserActivity : AppCompatActivity(){
     }
 
     private fun saveBitmap() {
-        TODO("shdhsk")
+        imgVolatileStorage.bitmapToErase = draw_view.getResultBitmap()
     }
 
     private fun activateGestureView() {

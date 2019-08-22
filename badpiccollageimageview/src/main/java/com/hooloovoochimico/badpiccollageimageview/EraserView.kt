@@ -14,6 +14,7 @@ import android.util.Pair
 import android.view.MotionEvent
 import android.view.View
 import android.widget.Button
+import androidx.core.graphics.applyCanvas
 import androidx.core.graphics.withSave
 
 import java.lang.ref.WeakReference
@@ -47,9 +48,16 @@ class DrawView(c: Context, attrs: AttributeSet) : View(c, attrs) {
     }
 
     init {
+        initDrawView()
+    }
 
+    fun setButtons(undoButton: Button, redoButton: Button) {
+        this.undoButton = undoButton
+        this.redoButton = redoButton
+    }
+
+    fun initDrawView(){
         livePath = Path()
-
         pathPaint = Paint(Paint.ANTI_ALIAS_FLAG)
         pathPaint!!.isDither = true
         pathPaint!!.color = Color.TRANSPARENT
@@ -58,14 +66,10 @@ class DrawView(c: Context, attrs: AttributeSet) : View(c, attrs) {
         pathPaint!!.strokeJoin = Paint.Join.ROUND
         pathPaint!!.strokeCap = Paint.Cap.ROUND
 
-        isDrawingCacheEnabled = true
+        //isDrawingCacheEnabled = true
         setLayerType(View.LAYER_TYPE_HARDWARE, null)
     }
 
-    fun setButtons(undoButton: Button, redoButton: Button) {
-        this.undoButton = undoButton
-        this.redoButton = redoButton
-    }
 
 
     override fun onSizeChanged(newWidth: Int, newHeight: Int, oldWidth: Int, oldHeight: Int) {
@@ -77,6 +81,12 @@ class DrawView(c: Context, attrs: AttributeSet) : View(c, attrs) {
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
 
+        drawOnCanvas(canvas)
+
+    }
+
+
+    private fun drawOnCanvas(canvas:Canvas){
         canvas.withSave {
             if (currentBitmap != null) {
 
@@ -93,7 +103,6 @@ class DrawView(c: Context, attrs: AttributeSet) : View(c, attrs) {
                 }
             }
         }
-
     }
 
     private fun touchStart(x: Float, y: Float) {
@@ -209,6 +218,12 @@ class DrawView(c: Context, attrs: AttributeSet) : View(c, attrs) {
             currentBitmap = getResizedBitmap(this.currentBitmap!!, width, height)
             currentBitmap!!.setHasAlpha(true)
             invalidate()
+        }
+    }
+
+    fun getResultBitmap() : Bitmap {
+        return Bitmap.createBitmap(currentBitmap!!.width, currentBitmap!!.height,Bitmap.Config.ARGB_8888).applyCanvas {
+            drawOnCanvas(this)
         }
     }
 

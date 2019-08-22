@@ -25,6 +25,7 @@ import com.hooloovoochimico.badpiccollageimageview.*
 import com.hooloovoochimico.genericlistbottomsheet.GenericBottomSheet
 import com.hooloovoochimico.genericlistbottomsheet.getGenericBottomSheet
 import com.manzo.slang.extensions.goneIf
+import com.manzo.slang.extensions.start
 import com.manzo.slang.extensions.startActivity
 import com.manzo.slang.extensions.string
 import com.manzo.slang.navigation.toAdapter
@@ -263,6 +264,8 @@ class MainActivity : AppCompatActivity(), TextEditorDialogFragment.OnTextLayerCa
 
         if(requestCode == MEME_REQ && resultCode ==  Activity.RESULT_OK){
             addImageToImageView(imgVolatileStorage.memeSelected!!)
+        }else if(requestCode ==  ERASE_REQ && resultCode ==  Activity.RESULT_OK){
+            replaceSticker(imgVolatileStorage.bitmapToErase)
         }
     }
 
@@ -482,7 +485,13 @@ class MainActivity : AppCompatActivity(), TextEditorDialogFragment.OnTextLayerCa
     private fun eraseBackground(entity: MotionEntity?){
         if(entity is ImageEntity){
             imgVolatileStorage.bitmapToErase = entity.bitmap
-            startActivity<BackgroundEraserActivity>()
+            //startActivity<BackgroundEraserActivity>()
+
+            startActivityForResult(Intent(this, BackgroundEraserActivity::class.java), ERASE_REQ)
+
+
+
+
         }
     }
 
@@ -519,9 +528,22 @@ class MainActivity : AppCompatActivity(), TextEditorDialogFragment.OnTextLayerCa
         }
     }
 
+    private fun replaceSticker(bitmap: Bitmap?){
+
+        if(bitmap!=null) {
+
+            imageView.deleteSelectedEntity()
+            addImageToImageView(bitmap)
+
+        }
+
+
+    }
+
 
     companion object{
         const val MEME_REQ = 2738
+        const val ERASE_REQ = 2739
     }
 
 
