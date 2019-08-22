@@ -6,7 +6,7 @@ import com.google.gson.annotations.SerializedName
 enum class ActionModelsEnum{
     PICK_FROM_CAMERA, PICK_FROM_GALLERY,PICK_FROM_IMGFLIP, ADD_TEXT,
     INCREASE_TEXT,DECREASE_TEXT,CHOOSE_BG_TEXT_COLOR, CHOOSE_TEXT_COLOR,
-    CHOOSE_TEXT_FONT,CANCEL,EDIT_TEXT,ADD_BLANK_IMAGE, DELETE, FLIP
+    CHOOSE_TEXT_FONT,CANCEL,EDIT_TEXT,ADD_BLANK_IMAGE, DELETE, FLIP, ERASE
 }
 
 data class ActionModels(val action:ActionModelsEnum)
@@ -36,6 +36,7 @@ fun getTextActions() = listOf(
 fun getImageActions() = listOf(
     ActionModels(ActionModelsEnum.FLIP),
     ActionModels(ActionModelsEnum.DELETE),
+    ActionModels(ActionModelsEnum.ERASE),
     ActionModels(ActionModelsEnum.CANCEL)
 )
 

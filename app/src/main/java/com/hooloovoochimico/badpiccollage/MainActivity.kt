@@ -103,6 +103,7 @@ class MainActivity : AppCompatActivity(), TextEditorDialogFragment.OnTextLayerCa
                             ActionModelsEnum.FLIP -> R.drawable.ic_flip
                             ActionModelsEnum.DELETE -> R.drawable.ic_delete
                             ActionModelsEnum.CANCEL -> R.drawable.ic_cancel_red
+                            ActionModelsEnum.ERASE -> R.drawable.ic_erase_red
                             else -> R.drawable.ic_add_red
 
                         }
@@ -195,9 +196,8 @@ class MainActivity : AppCompatActivity(), TextEditorDialogFragment.OnTextLayerCa
         }
 
         add_image_hint.setOnClickListener {
-            //openChoosePhoto()
+            openChoosePhoto()
 
-            startActivity<BackgroundEraserActivity>()
         }
 
         if(savedInstanceState!=null){
@@ -463,6 +463,9 @@ class MainActivity : AppCompatActivity(), TextEditorDialogFragment.OnTextLayerCa
                 imageView.unselectEntity()
                 openEditPanel(false)
             }
+            ActionModelsEnum.ERASE -> {
+                eraseBackground(imageView.selectedEntity)
+            }
             else -> {
             }
         }
@@ -473,6 +476,13 @@ class MainActivity : AppCompatActivity(), TextEditorDialogFragment.OnTextLayerCa
         if(entity is TextEntity){
             TextEditorDialogFragment.getInstance(entity.getTextLayer().text?:"")
                 .show(supportFragmentManager,TextEditorDialogFragment::class.java.name)
+        }
+    }
+
+    private fun eraseBackground(entity: MotionEntity?){
+        if(entity is ImageEntity){
+            imgVolatileStorage.bitmapToErase = entity.bitmap
+            startActivity<BackgroundEraserActivity>()
         }
     }
 

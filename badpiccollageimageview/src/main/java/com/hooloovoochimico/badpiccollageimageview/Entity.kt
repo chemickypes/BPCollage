@@ -208,7 +208,7 @@ abstract  class MotionEntity(
 
 }
 
-class ImageEntity(layer:Layer = Layer(), private  val bitmap: Bitmap,
+class ImageEntity(layer:Layer = Layer(), val bitmap: Bitmap,
                   canvasWidth: Int = 1,
                    canvasHeight: Int = 1): MotionEntity(layer, canvasWidth, canvasHeight){
 
