@@ -90,16 +90,16 @@ class DrawView(c: Context, attrs: AttributeSet) : View(c, attrs) {
         canvas.withSave {
             if (currentBitmap != null) {
 
-                canvas.drawBitmap(currentBitmap!!, 0f, 0f, null)
+                drawBitmap(currentBitmap!!, 0f, 0f, null)
 
                 for (action in cuts) {
                     if (action.first != null) {
-                        canvas.drawPath(action.first!!.first, action.first!!.second)
+                        drawPath(action.first!!.first, action.first!!.second)
                     }
                 }
 
                 if (currentAction == DrawViewAction.MANUAL_CLEAR) {
-                    canvas.drawPath(livePath!!, pathPaint!!)
+                    drawPath(livePath!!, pathPaint!!)
                 }
             }
         }

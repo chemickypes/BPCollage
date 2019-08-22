@@ -4,6 +4,7 @@ import android.app.Activity
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import android.widget.ImageView
 import android.widget.LinearLayout
 import androidx.appcompat.app.AppCompatActivity
@@ -14,7 +15,7 @@ import com.manzo.slang.navigation.toAdapter
 import kotlinx.android.synthetic.main.background_eraser_activity.*
 import org.koin.android.ext.android.inject
 import com.alexvasilkov.gestures.Settings.MAX_ZOOM
-
+import top.defaults.checkerboarddrawable.CheckerboardDrawable
 
 
 class BackgroundEraserActivity : AppCompatActivity(){
@@ -111,8 +112,14 @@ class BackgroundEraserActivity : AppCompatActivity(){
         text_action_panel.adapter = erasePanelAdapter
 
 
+
+        transparent_view.background =  CheckerboardDrawable.create()
+
         //draw_view.initDrawView()
 
+       // draw_view.setAction(DrawView.DrawViewAction.MANUAL_CLEAR)
+
+        draw_view.setLayerType(View.LAYER_TYPE_HARDWARE, null)
         draw_view.setStrokeWidth(40)
 
         imgVolatileStorage.bitmapToErase?.let {

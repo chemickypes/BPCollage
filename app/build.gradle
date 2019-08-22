@@ -61,6 +61,7 @@ dependencies {
     implementation "com.github.skydoves:colorpickerview:2.1.5"
     implementation 'com.github.manolodantonio:SLANG-library:0.1.4-alpha4'
     implementation 'com.github.TutorialsAndroid:progressx:v4.0.19'
+    implementation 'com.github.duanhong169:checkerboarddrawable:1.0.2'
 
     implementation 'com.google.firebase:firebase-core:17.0.1'
     implementation 'com.google.firebase:firebase-analytics:17.0.1'
