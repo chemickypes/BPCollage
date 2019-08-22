@@ -189,7 +189,13 @@ class DrawView(c: Context, attrs: AttributeSet) : View(c, attrs) {
         //toast the user
     }
 
+    override fun performClick(): Boolean {
+        return super.performClick()
+    }
+
     override fun onTouchEvent(ev: MotionEvent): Boolean {
+
+        performClick()
 
         if (currentBitmap != null && currentAction != DrawViewAction.ZOOM) {
             when (ev.action) {

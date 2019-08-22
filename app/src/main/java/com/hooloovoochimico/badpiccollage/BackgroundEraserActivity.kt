@@ -111,7 +111,7 @@ class BackgroundEraserActivity : AppCompatActivity(){
         text_action_panel.adapter = erasePanelAdapter
 
 
-        draw_view.initDrawView()
+        //draw_view.initDrawView()
 
         draw_view.setStrokeWidth(40)
 
