@@ -61,7 +61,7 @@ class DrawView(c: Context, attrs: AttributeSet) : View(c, attrs) {
         pathPaint = Paint(Paint.ANTI_ALIAS_FLAG)
         pathPaint!!.isDither = true
         pathPaint!!.color = Color.TRANSPARENT
-        pathPaint!!.xfermode = PorterDuffXfermode(PorterDuff.Mode.SRC_OUT)
+        pathPaint!!.xfermode = PorterDuffXfermode(PorterDuff.Mode.CLEAR)
         pathPaint!!.style = Paint.Style.STROKE
         pathPaint!!.strokeJoin = Paint.Join.ROUND
         pathPaint!!.strokeCap = Paint.Cap.ROUND
