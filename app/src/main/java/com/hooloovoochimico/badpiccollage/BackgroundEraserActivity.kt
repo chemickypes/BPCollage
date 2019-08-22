@@ -11,6 +11,9 @@ import com.manzo.slang.extensions.string
 import com.manzo.slang.navigation.toAdapter
 import kotlinx.android.synthetic.main.background_eraser_activity.*
 import org.koin.android.ext.android.inject
+import com.alexvasilkov.gestures.Settings.MAX_ZOOM
+
+
 
 class BackgroundEraserActivity : AppCompatActivity(){
 
@@ -36,23 +39,59 @@ class BackgroundEraserActivity : AppCompatActivity(){
                     )
                 }
 
-                holder.itemView.isEnabled = element.enabled
+                holder.itemView.isActivated = element.enabled
                 holder.itemView.alpha = if(element.enabled) 1f else 0.6f
 
                 holder.itemView.setOnClickListener {
                     when(element.action){
-                        ActionModelsEnum.ZOOM -> draw_view.setAction(DrawView.DrawViewAction.ZOOM)
-                        ActionModelsEnum.MANUAL_ERASE -> draw_view.setAction(DrawView.DrawViewAction.MANUAL_CLEAR)
-                        ActionModelsEnum.MAGIC_ERASE -> draw_view.setAction(DrawView.DrawViewAction.AUTO_CLEAR)
+                        ActionModelsEnum.ZOOM -> {
+
+                            if(!holder.itemView.isActivated) {
+                                enableButton(ActionModelsEnum.ZOOM)
+                                activateGestureView()
+                            }
+                        }
+                        ActionModelsEnum.MANUAL_ERASE -> {
+                            if(!holder.itemView.isActivated) {
+                                enableButton(ActionModelsEnum.MANUAL_ERASE)
+                                deactivateGestureView()
+                            }
+                        }
+                        ActionModelsEnum.MAGIC_ERASE -> {
+                            if(!holder.itemView.isActivated) {
+                                enableButton(ActionModelsEnum.MAGIC_ERASE)
+                                deactivateGestureView()
+                            }
+                        }
                         ActionModelsEnum.UNDO -> draw_view.undo()
                         ActionModelsEnum.REDO -> draw_view.redo()
 
-                        else -> R.drawable.ic_add_red
+                        else -> {
+
+                        }
 
                     }
                 }
             }
         )
+    }
+
+    private fun enableButton(action: ActionModelsEnum){
+
+        draw_view.setAction(when(action) {
+            ActionModelsEnum.ZOOM -> DrawView.DrawViewAction.ZOOM
+            ActionModelsEnum.MAGIC_ERASE -> DrawView.DrawViewAction.AUTO_CLEAR
+            else -> DrawView.DrawViewAction.MANUAL_CLEAR
+        })
+
+        erasePanelAdapter.dataset.forEach {
+            if(it.action ==  ActionModelsEnum.UNDO ||
+                it.action ==  ActionModelsEnum.REDO) return
+
+            it.enabled = it.action == action
+        }
+
+        erasePanelAdapter.notifyDataSetChanged()
     }
 
 
@@ -76,6 +115,8 @@ class BackgroundEraserActivity : AppCompatActivity(){
             draw_view.setBitmap(it)
         }
 
+        deactivateGestureView()
+
 
     }
 
@@ -88,6 +129,7 @@ class BackgroundEraserActivity : AppCompatActivity(){
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
 
         if(item?.itemId == android.R.id.home ){
+            setResult(RESULT_CANCELED)
             super.onBackPressed()
         }
 
@@ -101,5 +143,21 @@ class BackgroundEraserActivity : AppCompatActivity(){
 
     private fun saveBitmap() {
         TODO("shdhsk")
+    }
+
+    private fun activateGestureView() {
+        gesture_view.controller.settings
+            .setMaxZoom(MAX_ZOOM)
+            .setDoubleTapZoom(-1f) // Falls back to max zoom level
+            .setPanEnabled(true)
+            .setZoomEnabled(true)
+            .setDoubleTapEnabled(true)
+            .setOverscrollDistance(0f, 0f).overzoomFactor = 2f
+    }
+
+    private fun deactivateGestureView() {
+        gesture_view.controller.settings
+            .setPanEnabled(false)
+            .setZoomEnabled(false).isDoubleTapEnabled = false
     }
 }

@@ -10,7 +10,7 @@ enum class ActionModelsEnum{
     MAGIC_ERASE, MANUAL_ERASE
 }
 
-data class ActionModels(val action:ActionModelsEnum, val enabled:Boolean = true)
+data class ActionModels(val action:ActionModelsEnum, var enabled:Boolean = true)
 
 
 fun getAddAction(init:Boolean = true): List<ActionModels> = mutableListOf(
