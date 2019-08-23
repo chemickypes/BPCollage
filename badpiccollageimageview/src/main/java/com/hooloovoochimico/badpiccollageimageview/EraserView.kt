@@ -50,6 +50,16 @@ class DrawView(c: Context, attrs: AttributeSet) : View(c, attrs) {
         }
     }
 
+    var strokeWidth: Float = 40f
+    set(value) {
+        field = when{
+            value < 10 -> 10f
+            value > 100 -> 100f
+            else -> value
+        }
+        setStrokeWidthP(field)
+    }
+
     enum class DrawViewAction {
         AUTO_CLEAR,
         MANUAL_CLEAR,
@@ -256,15 +266,13 @@ class DrawView(c: Context, attrs: AttributeSet) : View(c, attrs) {
         this.currentAction = newAction
     }
 
-    fun setStrokeWidth(strokeWidth: Int) {
+    private fun setStrokeWidthP(strokeWidth: Float) {
 
         pathPaint = Paint(pathPaint)
-        pathPaint!!.strokeWidth = when{
-            strokeWidth < 10 -> 10f
-            strokeWidth > 100 -> 100f
-            else -> strokeWidth.toFloat()
-        }
+        pathPaint!!.strokeWidth = strokeWidth
     }
+
+    //fun getStokeWidth() = pathPaint!!.strokeWidth
 
     fun setLoadingModal(loadingModal: View) {
         this.loadingModal = loadingModal

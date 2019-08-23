@@ -78,6 +78,8 @@ class BackgroundEraserActivity : AppCompatActivity(){
         if(action == ActionModelsEnum.MAGIC_ERASE ||
             action == ActionModelsEnum.MANUAL_ERASE) {
             options_panel.visible()
+
+            listener_seekbar.setProgress(if(action == ActionModelsEnum.MAGIC_ERASE) draw_view.colorTolerance else draw_view.strokeWidth)
             deactivateGestureView()
         }else {
             options_panel.gone()
@@ -124,8 +126,8 @@ class BackgroundEraserActivity : AppCompatActivity(){
                     draw_view.colorTolerance = seekParams?.progress?.toFloat()?: 10f
                     toast("${string(R.string.tolerance)}: ${draw_view.colorTolerance}")
                 }else if(draw_view.currentAction == DrawView.DrawViewAction.MANUAL_CLEAR){
-                    draw_view.setStrokeWidth(seekParams?.progress?: 40)
-                    toast("${string(R.string.stroke)}: ${draw_view.colorTolerance}")
+                    draw_view.strokeWidth = (seekParams?.progressFloat?: 40f)
+                    toast("${string(R.string.stroke)}: ${draw_view.strokeWidth}")
                 }
             }
 
