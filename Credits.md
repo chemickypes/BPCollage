@@ -15,3 +15,4 @@ This file is to thank to every people who developed libraries and example I used
   * alexvasilkov's [GestureViews](https://github.com/alexvasilkov/GestureViews)
   * GabrielBB's [Android-CutOut](https://github.com/GabrielBB/Android-CutOut)
   * duanhong196's [CheckerboardDrawable](https://github.com/duanhong169/CheckerboardDrawable)
+  * warkiz's [TickSeekBar](https://github.com/warkiz/TickSeekBar)
