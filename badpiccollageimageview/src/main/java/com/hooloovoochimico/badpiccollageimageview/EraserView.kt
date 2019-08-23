@@ -39,7 +39,7 @@ class DrawView(c: Context, attrs: AttributeSet) : View(c, attrs) {
 
     private var loadingModal: View? = null
 
-    private var currentAction: DrawViewAction? = null
+    var currentAction: DrawViewAction? = null
 
     var colorTolerance: Float = COLOR_TOLERANCE
     set(value) {
@@ -74,6 +74,7 @@ class DrawView(c: Context, attrs: AttributeSet) : View(c, attrs) {
         pathPaint!!.style = Paint.Style.STROKE
         pathPaint!!.strokeJoin = Paint.Join.ROUND
         pathPaint!!.strokeCap = Paint.Cap.ROUND
+        pathPaint!!.strokeWidth = 40f
 
         //isDrawingCacheEnabled = true
         setLayerType(View.LAYER_TYPE_HARDWARE, null)
@@ -256,8 +257,13 @@ class DrawView(c: Context, attrs: AttributeSet) : View(c, attrs) {
     }
 
     fun setStrokeWidth(strokeWidth: Int) {
+
         pathPaint = Paint(pathPaint)
-        pathPaint!!.strokeWidth = strokeWidth.toFloat()
+        pathPaint!!.strokeWidth = when{
+            strokeWidth < 10 -> 10f
+            strokeWidth > 100 -> 100f
+            else -> strokeWidth.toFloat()
+        }
     }
 
     fun setLoadingModal(loadingModal: View) {

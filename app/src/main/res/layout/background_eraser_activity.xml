@@ -37,6 +37,46 @@
 
     </FrameLayout>
 
+    <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/options_panel"
+            android:layout_width="0dp"
+                                                       android:layout_height="0dp"
+                                                       app:layout_constraintBottom_toBottomOf="@id/text_action_panel"
+                                                       app:layout_constraintTop_toTopOf="@+id/text_action_panel"
+                                                       app:layout_constraintEnd_toEndOf="@+id/text_action_panel"
+                                                       app:layout_constraintStart_toStartOf="@+id/text_action_panel"
+                                                       android:background="@android:color/white"
+                                                       app:layout_constraintHorizontal_bias="0.0"
+                                                       app:layout_constraintVertical_bias="1.0">
+
+        <ImageView android:layout_width="24dp" android:layout_height="24dp"
+                   android:src="@drawable/ic_cancel_red"
+                   android:id="@+id/cancel_action"
+                   android:layout_marginEnd="16dp" app:layout_constraintEnd_toEndOf="parent"
+                   app:layout_constraintTop_toTopOf="parent"
+                   app:layout_constraintBottom_toBottomOf="parent"/>
+
+        <com.warkiz.tickseekbar.TickSeekBar
+                android:id="@+id/listener_seekbar"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:tsb_ticks_count="0"
+                app:tsb_thumb_color="@color/colorPrimary"
+                app:tsb_thumb_size="16dp"
+                app:tsb_show_tick_marks_type="oval"
+                app:tsb_tick_marks_color="@color/colorPrimary"
+                app:tsb_tick_texts_size="13sp"
+                app:tsb_track_background_color="@color/colorPrimaryLightPix"
+                app:tsb_track_background_size="2dp"
+                app:tsb_track_progress_color="@color/colorPrimary"
+                app:tsb_track_progress_size="3dp"
+                android:layout_marginStart="16dp" app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/cancel_action" app:layout_constraintHorizontal_bias="0.1"
+                app:layout_constraintTop_toTopOf="@+id/cancel_action"
+                app:layout_constraintBottom_toBottomOf="@+id/cancel_action" android:layout_marginEnd="8dp"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
 
 
     <com.developer.progressx.ProgressWheel

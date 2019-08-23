@@ -43,7 +43,7 @@ fun getImageActions() = listOf(
 
 
 fun getEraseActions() = listOf(
-    ActionModels(ActionModelsEnum.ZOOM),
+    //ActionModels(ActionModelsEnum.ZOOM),
     ActionModels(ActionModelsEnum.MAGIC_ERASE),
     ActionModels(ActionModelsEnum.MANUAL_ERASE),
     ActionModels(ActionModelsEnum.UNDO),

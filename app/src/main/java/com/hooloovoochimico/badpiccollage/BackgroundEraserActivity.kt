@@ -7,6 +7,7 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.ImageView
 import android.widget.LinearLayout
+import android.widget.SeekBar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.hooloovoochimico.badpiccollageimageview.DrawView
@@ -15,6 +16,12 @@ import com.manzo.slang.navigation.toAdapter
 import kotlinx.android.synthetic.main.background_eraser_activity.*
 import org.koin.android.ext.android.inject
 import com.alexvasilkov.gestures.Settings.MAX_ZOOM
+import com.manzo.slang.extensions.gone
+import com.manzo.slang.extensions.toast
+import com.manzo.slang.extensions.visible
+import com.warkiz.tickseekbar.OnSeekChangeListener
+import com.warkiz.tickseekbar.SeekParams
+import com.warkiz.tickseekbar.TickSeekBar
 import top.defaults.checkerboarddrawable.CheckerboardDrawable
 
 
@@ -47,27 +54,11 @@ class BackgroundEraserActivity : AppCompatActivity(){
 
                 holder.itemView.setOnClickListener {
                     when(element.action){
-                        ActionModelsEnum.ZOOM -> {
-
-                            enableButton(ActionModelsEnum.ZOOM)
-                            activateGestureView()
-
-                        }
-                        ActionModelsEnum.MANUAL_ERASE -> {
-                            enableButton(ActionModelsEnum.MANUAL_ERASE)
-                            deactivateGestureView()
-
-                        }
-                        ActionModelsEnum.MAGIC_ERASE -> {
-                            enableButton(ActionModelsEnum.MAGIC_ERASE)
-                            deactivateGestureView()
-
-                        }
                         ActionModelsEnum.UNDO -> draw_view.undo()
                         ActionModelsEnum.REDO -> draw_view.redo()
 
                         else -> {
-
+                            enableButton(element.action)
                         }
 
                     }
@@ -84,14 +75,19 @@ class BackgroundEraserActivity : AppCompatActivity(){
             else -> DrawView.DrawViewAction.MANUAL_CLEAR
         })
 
-        erasePanelAdapter.dataset.forEach {
-            if(it.action ==  ActionModelsEnum.UNDO ||
-                it.action ==  ActionModelsEnum.REDO) return
-
-            it.enabled = it.action == action
+        if(action == ActionModelsEnum.MAGIC_ERASE ||
+            action == ActionModelsEnum.MANUAL_ERASE) {
+            options_panel.visible()
+            deactivateGestureView()
+        }else {
+            options_panel.gone()
+            activateGestureView()
         }
 
-        erasePanelAdapter.notifyDataSetChanged()
+        listener_seekbar.max = if(action == ActionModelsEnum.MAGIC_ERASE) 65f else 100f
+        listener_seekbar.min = 10f
+
+
     }
 
 
@@ -111,22 +107,44 @@ class BackgroundEraserActivity : AppCompatActivity(){
         text_action_panel.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL,false)
         text_action_panel.adapter = erasePanelAdapter
 
+        options_panel.gone()
+
 
 
         transparent_view.background =  CheckerboardDrawable.create()
 
-        //draw_view.initDrawView()
-
-       // draw_view.setAction(DrawView.DrawViewAction.MANUAL_CLEAR)
+       enableButton(ActionModelsEnum.ZOOM)
 
         draw_view.setLayerType(View.LAYER_TYPE_HARDWARE, null)
-        draw_view.setStrokeWidth(40)
+
+        listener_seekbar.onSeekChangeListener = object : OnSeekChangeListener {
+            override fun onSeeking(seekParams: SeekParams?) {
+
+                if(draw_view.currentAction == DrawView.DrawViewAction.AUTO_CLEAR){
+                    draw_view.colorTolerance = seekParams?.progress?.toFloat()?: 10f
+                    toast("${string(R.string.tolerance)}: ${draw_view.colorTolerance}")
+                }else if(draw_view.currentAction == DrawView.DrawViewAction.MANUAL_CLEAR){
+                    draw_view.setStrokeWidth(seekParams?.progress?: 40)
+                    toast("${string(R.string.stroke)}: ${draw_view.colorTolerance}")
+                }
+            }
+
+            override fun onStartTrackingTouch(seekBar: TickSeekBar?) {
+            }
+
+            override fun onStopTrackingTouch(seekBar: TickSeekBar?) {
+            }
+
+        }
 
         imgVolatileStorage.bitmapToErase?.let {
             draw_view.setBitmap(it)
         }
 
-        deactivateGestureView()
+        cancel_action.setOnClickListener {
+            enableButton(ActionModelsEnum.ZOOM)
+        }
+
 
 
     }
