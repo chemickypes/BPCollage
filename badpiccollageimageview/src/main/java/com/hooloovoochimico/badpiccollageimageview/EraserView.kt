@@ -41,6 +41,15 @@ class DrawView(c: Context, attrs: AttributeSet) : View(c, attrs) {
 
     private var currentAction: DrawViewAction? = null
 
+    var colorTolerance: Float = COLOR_TOLERANCE
+    set(value) {
+        field = when {
+            value < 10f -> 10f
+            value > 65f -> 65f
+            else -> value
+        }
+    }
+
     enum class DrawViewAction {
         AUTO_CLEAR,
         MANUAL_CLEAR,
@@ -113,7 +122,7 @@ class DrawView(c: Context, attrs: AttributeSet) : View(c, attrs) {
         redoButton?.isEnabled = false
 
         if (currentAction == DrawViewAction.AUTO_CLEAR) {
-            AutomaticPixelClearingTask(this).execute(x.toInt(), y.toInt())
+            AutomaticPixelClearingTask(this, colorTolerance).execute(x.toInt(), y.toInt())
         } else {
             livePath!!.moveTo(x, y)
         }
@@ -257,7 +266,7 @@ class DrawView(c: Context, attrs: AttributeSet) : View(c, attrs) {
 
 
 
-    private class AutomaticPixelClearingTask internal constructor(drawView: DrawView) : AsyncTask<Int, Void, Bitmap>() {
+    private class AutomaticPixelClearingTask internal constructor(drawView: DrawView, val colorTolerance: Float) : AsyncTask<Int, Void, Bitmap>() {
 
         private val drawViewWeakReference: WeakReference<DrawView> = WeakReference(drawView)
 
@@ -295,8 +304,8 @@ class DrawView(c: Context, attrs: AttributeSet) : View(c, attrs) {
                     val rrG = Color.green(pixel)
                     val rrB = Color.blue(pixel)
 
-                    if (rA - COLOR_TOLERANCE < rrA && rrA < rA + COLOR_TOLERANCE && rR - COLOR_TOLERANCE < rrR && rrR < rR + COLOR_TOLERANCE &&
-                        rG - COLOR_TOLERANCE < rrG && rrG < rG + COLOR_TOLERANCE && rB - COLOR_TOLERANCE < rrB && rrB < rB + COLOR_TOLERANCE
+                    if (rA - colorTolerance < rrA && rrA < rA + colorTolerance && rR - colorTolerance < rrR && rrR < rR + colorTolerance &&
+                        rG - colorTolerance < rrG && rrG < rG + colorTolerance && rB - colorTolerance < rrB && rrB < rB + colorTolerance
                     ) {
                         pixels[index] = Color.TRANSPARENT
                     }

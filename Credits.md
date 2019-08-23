@@ -12,3 +12,6 @@ This file is to thank to every people who developed libraries and example I used
   * [RxPaparazzo](https://github.com/miguelbcr/RxPaparazzo) and [uCrop](https://github.com/Yalantis/uCrop)
   * My [Glitchy project](https://github.com/chemickypes/Glitchy)
   * Imgflip [API](https://api.imgflip.com/) to get memes list
+  * alexvasilkov's [GestureViews](https://github.com/alexvasilkov/GestureViews)
+  * GabrielBB's [Android-CutOut](https://github.com/GabrielBB/Android-CutOut)
+  * duanhong196's [CheckerboardDrawable](https://github.com/duanhong169/CheckerboardDrawable)
