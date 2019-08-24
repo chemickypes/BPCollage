@@ -178,7 +178,7 @@ class BackgroundEraserActivity : AppCompatActivity(){
 
     private fun activateGestureView() {
         gesture_view.controller.settings
-            .setMaxZoom(MAX_ZOOM)
+            .setMaxZoom(3f)
             .setDoubleTapZoom(-1f) // Falls back to max zoom level
             .setPanEnabled(true)
             .setZoomEnabled(true)
