@@ -136,7 +136,12 @@ class DrawView(c: Context, attrs: AttributeSet) : View(c, attrs) {
         redoButton?.isEnabled = false
 
         if (currentAction == DrawViewAction.AUTO_CLEAR) {
-            AutomaticPixelClearingTask(this, colorTolerance).execute(x.toInt(), y.toInt())
+
+            val (realImageX, realImageY) = getRealPointOnImage(x,y,currentBitmap!!,bitmapX,bitmapY)
+
+            if( realImageX > -1 && realImageY > -1 ) {
+                AutomaticPixelClearingTask(this, colorTolerance).execute(realImageX, realImageY)
+            }
         } else {
             livePath!!.moveTo(x, y)
         }

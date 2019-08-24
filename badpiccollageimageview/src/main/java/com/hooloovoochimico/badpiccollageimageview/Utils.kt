@@ -2,18 +2,11 @@ package com.hooloovoochimico.badpiccollageimageview
 
 
 import android.content.Context
-import android.graphics.Bitmap
-import android.graphics.PointF
 import androidx.annotation.NonNull
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.applyCanvas
 import android.R.attr.bitmap
-import android.graphics.Matrix
-import android.graphics.Paint
-
-
-
-
+import android.graphics.*
 
 
 fun getBitmapFromVectorDrawable(context: Context, drawableId: Int): Bitmap {
@@ -74,6 +67,26 @@ fun getCenterPos(bitmap: Bitmap,width: Int, height: Int): kotlin.Pair<Float,Floa
         Pair(0f, height/2 - originalHeight/2)
     }else {
         Pair(width/2 - originalWidth/2 ,0f)
+    }
+}
+
+/**
+ * this function checks if tap on view is on the image and if yes returns
+ * the real point on image otherwise a Pair of -1,-1
+ * @param xOnView x coord of tap on View
+ * @param yOnView y coord of tap on View
+ * @param image Bitmap in orger to get its dims
+ * @param offsetX offset to kwow position of bitmap on the view width
+ * @param offsetY offset to kwow bitmap position on the view height
+ *
+ * @return Pair of Int, the real position on image or Pair(-1,-1) if tap is outside
+ */
+fun getRealPointOnImage(xOnView: Float, yOnView: Float, image:Bitmap, offsetX : Float,offsetY:Float) :Pair<Int,Int>{
+    val rectf = RectF(offsetX, offsetY, offsetX+image.width, offsetY + image.height)
+    return if(rectf.contains(xOnView,yOnView)){
+        Pair((xOnView - offsetX).toInt(), (yOnView - offsetY).toInt())
+    }else{
+        Pair(-1,-1)
     }
 }
 
