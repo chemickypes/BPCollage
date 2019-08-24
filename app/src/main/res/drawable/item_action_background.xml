@@ -2,14 +2,9 @@
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
 
 
-    <item android:state_enabled="false">
-        <shape android:shape="rectangle">
-            <corners android:radius="5dp"/>
-            <solid android:color="@color/deep_grey"/>
-        </shape>
-    </item>
 
-    <item android:state_pressed="true" android:state_enabled="true" android:state_activated="true">
+
+    <item android:state_pressed="true" >
         <shape android:shape="rectangle">
             <corners android:radius="5dp"/>
             <solid android:color="@color/colorPrimaryLightPix"/>
