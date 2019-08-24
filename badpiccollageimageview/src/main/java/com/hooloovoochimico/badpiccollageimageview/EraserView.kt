@@ -41,6 +41,9 @@ class DrawView(c: Context, attrs: AttributeSet) : View(c, attrs) {
 
     var currentAction: DrawViewAction? = null
 
+    var bitmapX = 0f
+    var bitmapY = 0f
+
     var colorTolerance: Float = COLOR_TOLERANCE
     set(value) {
         field = when {
@@ -110,7 +113,7 @@ class DrawView(c: Context, attrs: AttributeSet) : View(c, attrs) {
         canvas.withSave {
             if (currentBitmap != null) {
 
-                drawBitmap(currentBitmap!!, 0f, 0f, null)
+                drawBitmap(currentBitmap!!, bitmapX, bitmapY, null)
 
                 for (action in cuts) {
                     if (action.first != null) {
@@ -244,9 +247,15 @@ class DrawView(c: Context, attrs: AttributeSet) : View(c, attrs) {
             //currentBitmap = getResizedBitmap(this.currentBitmap!!, width, height)
             currentBitmap = getResizedMapIntoViewDim(this.currentBitmap!!, width, height)
             currentBitmap!!.setHasAlpha(true)
+
+            val (rbitmapX , rbitmapY) = getCenterPos(currentBitmap!!,width, height)
+            bitmapX = rbitmapX
+            bitmapY = rbitmapY
             invalidate()
         }
     }
+
+
 
     fun getResultBitmap() : Bitmap {
         return Bitmap.createBitmap(currentBitmap!!.width, currentBitmap!!.height,Bitmap.Config.ARGB_8888).applyCanvas {

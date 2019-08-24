@@ -66,6 +66,17 @@ fun getResizedMapIntoViewDim(bitmap: Bitmap, width: Int, height: Int): Bitmap{
     return Bitmap.createScaledBitmap(bitmap, (originalWidth * scale).toInt(), (originalHeight * scale).toInt(),false)
 }
 
+fun getCenterPos(bitmap: Bitmap,width: Int, height: Int): kotlin.Pair<Float,Float>{
+    val originalWidth = bitmap.width.toFloat()
+    val originalHeight = bitmap.height.toFloat()
+
+    return if(originalWidth > originalHeight){
+        Pair(0f, height/2 - originalHeight/2)
+    }else {
+        Pair(width/2 - originalWidth/2 ,0f)
+    }
+}
+
 
 object MathUtils {
 

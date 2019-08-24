@@ -324,7 +324,7 @@ class MainActivity : AppCompatActivity(), TextEditorDialogFragment.OnTextLayerCa
                     .crop(UCrop.Options().apply {
                         setToolbarColor(ContextCompat.getColor(this@MainActivity, R.color.colorPrimary))
                         setActiveWidgetColor(ContextCompat.getColor(this@MainActivity, R.color.colorPrimary))
-                        //setFreeStyleCropEnabled(true)
+                        setFreeStyleCropEnabled(true)
                         setToolbarTitle(getCropImageTitle(this@MainActivity))
                     })
                 ) {
