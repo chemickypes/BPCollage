@@ -51,6 +51,22 @@ fun getResizedBitmap(bitmap: Bitmap, width: Int, height: Int): Bitmap{
 }
 
 
+fun getResizedMapIntoViewDim(bitmap: Bitmap, width: Int, height: Int): Bitmap{
+    val originalWidth = bitmap.width.toFloat()
+    val originalHeight = bitmap.height.toFloat()
+
+
+    // check if landscape or portrait
+    val scale = if(originalWidth > originalHeight){
+        width/originalWidth
+    }else {
+        height / originalHeight
+    }
+
+    return Bitmap.createScaledBitmap(bitmap, (originalWidth * scale).toInt(), (originalHeight * scale).toInt(),false)
+}
+
+
 object MathUtils {
 
     /**

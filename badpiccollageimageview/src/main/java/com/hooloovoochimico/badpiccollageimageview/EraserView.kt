@@ -241,7 +241,8 @@ class DrawView(c: Context, attrs: AttributeSet) : View(c, attrs) {
 
     private fun resizeBitmap(width: Int, height: Int) {
         if (width > 0 && height > 0 && currentBitmap != null) {
-            currentBitmap = getResizedBitmap(this.currentBitmap!!, width, height)
+            //currentBitmap = getResizedBitmap(this.currentBitmap!!, width, height)
+            currentBitmap = getResizedMapIntoViewDim(this.currentBitmap!!, width, height)
             currentBitmap!!.setHasAlpha(true)
             invalidate()
         }
