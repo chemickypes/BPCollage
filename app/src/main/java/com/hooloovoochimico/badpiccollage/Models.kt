@@ -6,10 +6,11 @@ import com.google.gson.annotations.SerializedName
 enum class ActionModelsEnum{
     PICK_FROM_CAMERA, PICK_FROM_GALLERY,PICK_FROM_IMGFLIP, ADD_TEXT,
     INCREASE_TEXT,DECREASE_TEXT,CHOOSE_BG_TEXT_COLOR, CHOOSE_TEXT_COLOR,
-    CHOOSE_TEXT_FONT,CANCEL,EDIT_TEXT,ADD_BLANK_IMAGE, DELETE, FLIP
+    CHOOSE_TEXT_FONT,CANCEL,EDIT_TEXT,ADD_BLANK_IMAGE, DELETE, FLIP, ERASE, ZOOM, UNDO, REDO,
+    MAGIC_ERASE, MANUAL_ERASE
 }
 
-data class ActionModels(val action:ActionModelsEnum)
+data class ActionModels(val action:ActionModelsEnum, var enabled:Boolean = true)
 
 
 fun getAddAction(init:Boolean = true): List<ActionModels> = mutableListOf(
@@ -36,9 +37,18 @@ fun getTextActions() = listOf(
 fun getImageActions() = listOf(
     ActionModels(ActionModelsEnum.FLIP),
     ActionModels(ActionModelsEnum.DELETE),
+    ActionModels(ActionModelsEnum.ERASE),
     ActionModels(ActionModelsEnum.CANCEL)
 )
 
+
+fun getEraseActions() = listOf(
+    //ActionModels(ActionModelsEnum.ZOOM),
+    ActionModels(ActionModelsEnum.MAGIC_ERASE),
+    ActionModels(ActionModelsEnum.MANUAL_ERASE),
+    ActionModels(ActionModelsEnum.UNDO),
+    ActionModels(ActionModelsEnum.REDO)
+)
 
 
 // SERVER IMAGE BEAN

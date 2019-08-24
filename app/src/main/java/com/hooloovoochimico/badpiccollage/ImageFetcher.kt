@@ -30,4 +30,5 @@ object ImageServiceManager {
 class ImageVolatileStorage {
 
     var memeSelected: Bitmap? = null
+    var bitmapToErase: Bitmap? = null
 }

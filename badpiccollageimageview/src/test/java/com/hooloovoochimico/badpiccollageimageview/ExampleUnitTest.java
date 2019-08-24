@@ -1,5 +1,6 @@
 package com.hooloovoochimico.badpiccollageimageview;
 
+import android.graphics.Bitmap;
 import org.junit.Test;
 
 import static org.junit.Assert.*;

@@ -24,9 +24,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.hooloovoochimico.badpiccollageimageview.*
 import com.hooloovoochimico.genericlistbottomsheet.GenericBottomSheet
 import com.hooloovoochimico.genericlistbottomsheet.getGenericBottomSheet
-import com.manzo.slang.extensions.goneIf
-import com.manzo.slang.extensions.startActivity
-import com.manzo.slang.extensions.string
+import com.manzo.slang.extensions.*
 import com.manzo.slang.navigation.toAdapter
 import com.miguelbcr.ui.rx_paparazzo2.RxPaparazzo
 import com.miguelbcr.ui.rx_paparazzo2.entities.FileData
@@ -46,6 +44,7 @@ import org.koin.android.ext.android.inject
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
 import org.koin.dsl.module
+import top.defaults.checkerboarddrawable.CheckerboardDrawable
 
 
 val appModule = module {
@@ -103,6 +102,7 @@ class MainActivity : AppCompatActivity(), TextEditorDialogFragment.OnTextLayerCa
                             ActionModelsEnum.FLIP -> R.drawable.ic_flip
                             ActionModelsEnum.DELETE -> R.drawable.ic_delete
                             ActionModelsEnum.CANCEL -> R.drawable.ic_cancel_red
+                            ActionModelsEnum.ERASE -> R.drawable.ic_erase_red
                             else -> R.drawable.ic_add_red
 
                         }
@@ -196,6 +196,7 @@ class MainActivity : AppCompatActivity(), TextEditorDialogFragment.OnTextLayerCa
 
         add_image_hint.setOnClickListener {
             openChoosePhoto()
+
         }
 
         if(savedInstanceState!=null){
@@ -223,9 +224,7 @@ class MainActivity : AppCompatActivity(), TextEditorDialogFragment.OnTextLayerCa
 
     override fun onResume() {
         super.onResume()
-        add_image_hint.goneIf {
-            imageView.isBaseImageLoaded
-        }
+        displayElementOnUI()
     }
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         return when(item?.itemId){
@@ -261,6 +260,8 @@ class MainActivity : AppCompatActivity(), TextEditorDialogFragment.OnTextLayerCa
 
         if(requestCode == MEME_REQ && resultCode ==  Activity.RESULT_OK){
             addImageToImageView(imgVolatileStorage.memeSelected!!)
+        }else if(requestCode ==  ERASE_REQ && resultCode ==  Activity.RESULT_OK){
+            replaceSticker(imgVolatileStorage.bitmapToErase)
         }
     }
 
@@ -387,9 +388,7 @@ class MainActivity : AppCompatActivity(), TextEditorDialogFragment.OnTextLayerCa
                 imageView.setImageBitmap(bitmap)
             }
 
-            add_image_hint.goneIf {
-                imageView.isBaseImageLoaded
-            }
+            displayElementOnUI()
         }
     }
 
@@ -461,6 +460,9 @@ class MainActivity : AppCompatActivity(), TextEditorDialogFragment.OnTextLayerCa
                 imageView.unselectEntity()
                 openEditPanel(false)
             }
+            ActionModelsEnum.ERASE -> {
+                eraseBackground(imageView.selectedEntity)
+            }
             else -> {
             }
         }
@@ -471,6 +473,19 @@ class MainActivity : AppCompatActivity(), TextEditorDialogFragment.OnTextLayerCa
         if(entity is TextEntity){
             TextEditorDialogFragment.getInstance(entity.getTextLayer().text?:"")
                 .show(supportFragmentManager,TextEditorDialogFragment::class.java.name)
+        }
+    }
+
+    private fun eraseBackground(entity: MotionEntity?){
+        if(entity is ImageEntity){
+            imgVolatileStorage.bitmapToErase = entity.bitmap
+            //startActivity<BackgroundEraserActivity>()
+
+            startActivityForResult(Intent(this, BackgroundEraserActivity::class.java), ERASE_REQ)
+
+
+
+
         }
     }
 
@@ -502,14 +517,37 @@ class MainActivity : AppCompatActivity(), TextEditorDialogFragment.OnTextLayerCa
 
     private fun clearImage(){
         imageView.clear()
+        displayElementOnUI()
+    }
+
+    private fun replaceSticker(bitmap: Bitmap?){
+
+        if(bitmap!=null) {
+
+            imageView.deleteSelectedEntity()
+            addImageToImageView(bitmap)
+
+        }
+
+
+    }
+
+    private fun displayElementOnUI(){
         add_image_hint.goneIf {
             imageView.isBaseImageLoaded
+        }
+
+        if (add_image_hint.isVisible()){
+            base_view.setBackgroundColor(color(android.R.color.white))
+        }else{
+            base_view.background = CheckerboardDrawable.create()
         }
     }
 
 
     companion object{
         const val MEME_REQ = 2738
+        const val ERASE_REQ = 2739
     }
 
 
