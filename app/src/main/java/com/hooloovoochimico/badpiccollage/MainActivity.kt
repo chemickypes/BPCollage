@@ -323,7 +323,7 @@ class MainActivity : AppCompatActivity(), TextEditorDialogFragment.OnTextLayerCa
                 with(RxPaparazzo.single(this)
                     .crop(UCrop.Options().apply {
                         setToolbarColor(color(R.color.colorPrimary))
-                        setToolbarWidgetColor(color(R.color.colorPrimary))
+                        //setToolbarWidgetColor(color(R.color.colorPrimary))
                         setActiveWidgetColor(color(R.color.colorPrimary))
                         setFreeStyleCropEnabled(true)
                         setToolbarTitle(getCropImageTitle(this@MainActivity))

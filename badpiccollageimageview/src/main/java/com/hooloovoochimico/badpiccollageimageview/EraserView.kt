@@ -266,9 +266,13 @@ class DrawView(c: Context, attrs: AttributeSet) : View(c, attrs) {
 
 
     fun getResultBitmap() : Bitmap {
-        return Bitmap.createBitmap(currentBitmap!!.width, currentBitmap!!.height,Bitmap.Config.ARGB_8888).applyCanvas {
-            drawOnCanvas(this, true)
-        }
+
+        //write entire view and then crop
+        return Bitmap.createBitmap(width,height,Bitmap.Config.ARGB_8888).applyCanvas {
+            drawOnCanvas(this)
+        }.crop(bitmapX.toInt(),bitmapY.toInt(),currentBitmap!!.width, currentBitmap!!.height)
+
+
     }
 
     fun setBitmap(bitmap: Bitmap) {

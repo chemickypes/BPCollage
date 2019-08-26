@@ -91,6 +91,11 @@ fun getRealPointOnImage(xOnView: Float, yOnView: Float, image:Bitmap, offsetX : 
 }
 
 
+fun Bitmap.crop(x:Int,y:Int, width: Int,height: Int): Bitmap {
+    return Bitmap.createBitmap(this,x,y,width, height)
+}
+
+
 object MathUtils {
 
     /**
