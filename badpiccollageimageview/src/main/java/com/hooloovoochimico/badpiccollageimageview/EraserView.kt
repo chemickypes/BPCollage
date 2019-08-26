@@ -53,6 +53,8 @@ class DrawView(c: Context, attrs: AttributeSet) : View(c, attrs) {
         }
     }
 
+    var magicEraseCallback : (Boolean) -> Unit = {_:Boolean -> }
+
     var strokeWidth: Float = 40f
     set(value) {
         field = when{
@@ -143,7 +145,7 @@ class DrawView(c: Context, attrs: AttributeSet) : View(c, attrs) {
             val (realImageX, realImageY) = getRealPointOnImage(x,y,currentBitmap!!,bitmapX,bitmapY)
 
             if( realImageX > -1 && realImageY > -1 ) {
-                AutomaticPixelClearingTask(this, colorTolerance).execute(realImageX, realImageY)
+                AutomaticPixelClearingTask(this, colorTolerance,magicEraseCallback).execute(realImageX, realImageY)
             }
         } else {
             livePath!!.moveTo(x, y)
@@ -302,12 +304,14 @@ class DrawView(c: Context, attrs: AttributeSet) : View(c, attrs) {
 
 
 
-    private class AutomaticPixelClearingTask internal constructor(drawView: DrawView, val colorTolerance: Float) : AsyncTask<Int, Void, Bitmap>() {
+    private class AutomaticPixelClearingTask internal constructor(drawView: DrawView, val colorTolerance: Float,
+                                                                  val callBackAction: ((Boolean) -> Unit)? = null) : AsyncTask<Int, Void, Bitmap>() {
 
         private val drawViewWeakReference: WeakReference<DrawView> = WeakReference(drawView)
 
         override fun onPreExecute() {
             super.onPreExecute()
+            callBackAction?.invoke(true)
             drawViewWeakReference.get()?.loadingModal?.visibility = VISIBLE
             drawViewWeakReference.get()?.cuts?.push(Pair(null, (drawViewWeakReference.get() as DrawView).currentBitmap ))
         }
@@ -356,6 +360,7 @@ class DrawView(c: Context, attrs: AttributeSet) : View(c, attrs) {
 
         override fun onPostExecute(result: Bitmap) {
             super.onPostExecute(result)
+            callBackAction?.invoke(false)
             drawViewWeakReference.get()?.currentBitmap = result
             drawViewWeakReference.get()?.undoButton?.isEnabled = true
             drawViewWeakReference.get()?.loadingModal?.visibility = INVISIBLE

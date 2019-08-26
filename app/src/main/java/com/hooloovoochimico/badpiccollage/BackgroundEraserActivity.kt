@@ -11,21 +11,20 @@ import android.widget.SeekBar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.hooloovoochimico.badpiccollageimageview.DrawView
-import com.manzo.slang.extensions.string
 import com.manzo.slang.navigation.toAdapter
 import kotlinx.android.synthetic.main.background_eraser_activity.*
 import org.koin.android.ext.android.inject
 import com.alexvasilkov.gestures.Settings.MAX_ZOOM
 import com.crashlytics.android.Crashlytics
-import com.manzo.slang.extensions.gone
-import com.manzo.slang.extensions.toast
-import com.manzo.slang.extensions.visible
+import com.manzo.slang.extensions.*
 import com.warkiz.tickseekbar.OnSeekChangeListener
 import com.warkiz.tickseekbar.SeekParams
 import com.warkiz.tickseekbar.TickSeekBar
 import io.reactivex.Single
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
+import kotlinx.android.synthetic.main.background_eraser_activity.progress_wheel
+import kotlinx.android.synthetic.main.meme_activity.*
 import top.defaults.checkerboarddrawable.CheckerboardDrawable
 
 
@@ -114,6 +113,19 @@ class BackgroundEraserActivity : AppCompatActivity(){
         text_action_panel.adapter = erasePanelAdapter
 
         options_panel.gone()
+        progress_wheel.barColor = color(R.color.colorPrimary)
+
+        draw_view.magicEraseCallback = { show ->
+
+            if(show){
+                progress_wheel.spin()
+                progress_wheel.visible()
+            }else{
+                progress_wheel.stopSpinning()
+                progress_wheel.gone()
+            }
+
+        }
 
 
 
