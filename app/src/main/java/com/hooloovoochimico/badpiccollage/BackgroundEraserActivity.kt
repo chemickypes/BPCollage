@@ -16,6 +16,7 @@ import com.manzo.slang.navigation.toAdapter
 import kotlinx.android.synthetic.main.background_eraser_activity.*
 import org.koin.android.ext.android.inject
 import com.alexvasilkov.gestures.Settings.MAX_ZOOM
+import com.crashlytics.android.Crashlytics
 import com.manzo.slang.extensions.gone
 import com.manzo.slang.extensions.toast
 import com.manzo.slang.extensions.visible
@@ -194,6 +195,7 @@ class BackgroundEraserActivity : AppCompatActivity(){
                     setResult(Activity.RESULT_OK)
                 }else {
                     setResult(Activity.RESULT_CANCELED)
+                    Crashlytics.logException(exc)
                 }
 
                 finish()
