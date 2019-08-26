@@ -51,9 +51,20 @@ fun getResizedMapIntoViewDim(bitmap: Bitmap, width: Int, height: Int): Bitmap{
 
     // check if landscape or portrait
     val scale = if(originalWidth >= originalHeight){
-        width/originalWidth
+
+        if(width > originalWidth){
+            //1f
+            height / originalHeight
+        }else {
+            width / originalWidth
+        }
     }else {
-        height / originalHeight
+        if (height > originalHeight){
+            //1f
+            width / originalWidth
+        }else {
+            height / originalHeight
+        }
     }
 
     return Bitmap.createScaledBitmap(bitmap, (originalWidth * scale).toInt(), (originalHeight * scale).toInt(),false)
@@ -64,9 +75,10 @@ fun getCenterPos(bitmap: Bitmap,width: Int, height: Int): kotlin.Pair<Float,Floa
     val originalHeight = bitmap.height.toFloat()
 
     return if(originalWidth > originalHeight){
-        Pair(0f, height/2 - originalHeight/2)
+        Pair(if(width > originalWidth) width/2 - originalWidth/2 else 0f, height/2 - originalHeight/2)
     }else {
-        Pair(width/2 - originalWidth/2 ,0f)
+        Pair(width/2 - originalWidth/2 ,
+            if(height > originalHeight) height/2 - originalHeight/2 else 0f)
     }
 }
 
