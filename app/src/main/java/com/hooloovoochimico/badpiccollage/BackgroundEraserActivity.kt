@@ -22,6 +22,9 @@ import com.manzo.slang.extensions.visible
 import com.warkiz.tickseekbar.OnSeekChangeListener
 import com.warkiz.tickseekbar.SeekParams
 import com.warkiz.tickseekbar.TickSeekBar
+import io.reactivex.Single
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
 import top.defaults.checkerboarddrawable.CheckerboardDrawable
 
 
@@ -165,15 +168,37 @@ class BackgroundEraserActivity : AppCompatActivity(){
         }
 
         if(item?.itemId == R.id.action_finish){
-            setResult(Activity.RESULT_OK)
+
             saveBitmap()
-            finish()
+
         }
         return super.onOptionsItemSelected(item)
     }
 
     private fun saveBitmap() {
-        imgVolatileStorage.bitmapToErase = draw_view.getResultBitmap()
+
+        progress_wheel.visible()
+        progress_wheel.spin()
+
+        val d = Single.defer {
+            Single.just(draw_view.getResultBitmap())
+        }
+            .subscribeOn(Schedulers.computation())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe { bitmap, exc ->
+
+                progress_wheel.stopSpinning()
+
+                if(exc== null) {
+                    imgVolatileStorage.bitmapToErase = bitmap
+                    setResult(Activity.RESULT_OK)
+                }else {
+                    setResult(Activity.RESULT_CANCELED)
+                }
+
+                finish()
+            }
+
     }
 
     private fun activateGestureView() {

@@ -109,13 +109,13 @@ class DrawView(c: Context, attrs: AttributeSet) : View(c, attrs) {
     }
 
 
-    private fun drawOnCanvas(canvas:Canvas, isResult:Boolean = false){
+    private fun drawOnCanvas(canvas:Canvas){
         canvas.withSave {
             if (currentBitmap != null) {
 
                 drawBitmap(currentBitmap!!,
-                    if(isResult) 0f else bitmapX,
-                    if(isResult) 0f else bitmapY,
+                    bitmapX,
+                    bitmapY,
                     null)
 
                 for (action in cuts) {
@@ -266,9 +266,13 @@ class DrawView(c: Context, attrs: AttributeSet) : View(c, attrs) {
 
 
     fun getResultBitmap() : Bitmap {
-        return Bitmap.createBitmap(currentBitmap!!.width, currentBitmap!!.height,Bitmap.Config.ARGB_8888).applyCanvas {
-            drawOnCanvas(this, true)
-        }
+
+        //write entire view and then crop
+        return Bitmap.createBitmap(width,height,Bitmap.Config.ARGB_8888).applyCanvas {
+            drawOnCanvas(this)
+        }.crop(bitmapX.toInt(),bitmapY.toInt(),currentBitmap!!.width, currentBitmap!!.height)
+
+
     }
 
     fun setBitmap(bitmap: Bitmap) {
