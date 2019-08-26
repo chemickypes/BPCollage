@@ -2,11 +2,11 @@ package com.hooloovoochimico.badpiccollageimageview
 
 
 import android.content.Context
-import android.graphics.Bitmap
-import android.graphics.PointF
 import androidx.annotation.NonNull
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.applyCanvas
+import android.R.attr.bitmap
+import android.graphics.*
 
 
 fun getBitmapFromVectorDrawable(context: Context, drawableId: Int): Bitmap {
@@ -18,6 +18,75 @@ fun getBitmapFromVectorDrawable(context: Context, drawableId: Int): Bitmap {
     ).applyCanvas {
         drawable.setBounds(0, 0, width, height)
         drawable.draw(this)
+    }
+}
+
+fun getResizedBitmap(bitmap: Bitmap, width: Int, height: Int): Bitmap{
+
+    val originalWidth = bitmap.width.toFloat()
+    val originalHeight = bitmap.height.toFloat()
+
+    val scale = width / originalWidth
+
+    val xTranslation = 0.0f
+    val yTranslation = (height - originalHeight * scale) / 2.0f
+
+    val transformation = Matrix()
+    transformation.postTranslate(xTranslation, yTranslation)
+    transformation.preScale(scale, scale)
+
+    val paint = Paint()
+    paint.isFilterBitmap = true
+
+   return  Bitmap.createBitmap(width,height, Bitmap.Config.ARGB_8888).applyCanvas {
+        drawBitmap(bitmap,transformation,paint)
+    }
+}
+
+
+fun getResizedMapIntoViewDim(bitmap: Bitmap, width: Int, height: Int): Bitmap{
+    val originalWidth = bitmap.width.toFloat()
+    val originalHeight = bitmap.height.toFloat()
+
+
+    // check if landscape or portrait
+    val scale = if(originalWidth > originalHeight){
+        width/originalWidth
+    }else {
+        height / originalHeight
+    }
+
+    return Bitmap.createScaledBitmap(bitmap, (originalWidth * scale).toInt(), (originalHeight * scale).toInt(),false)
+}
+
+fun getCenterPos(bitmap: Bitmap,width: Int, height: Int): kotlin.Pair<Float,Float>{
+    val originalWidth = bitmap.width.toFloat()
+    val originalHeight = bitmap.height.toFloat()
+
+    return if(originalWidth > originalHeight){
+        Pair(0f, height/2 - originalHeight/2)
+    }else {
+        Pair(width/2 - originalWidth/2 ,0f)
+    }
+}
+
+/**
+ * this function checks if tap on view is on the image and if yes returns
+ * the real point on image otherwise a Pair of -1,-1
+ * @param xOnView x coord of tap on View
+ * @param yOnView y coord of tap on View
+ * @param image Bitmap in orger to get its dims
+ * @param offsetX offset to kwow position of bitmap on the view width
+ * @param offsetY offset to kwow bitmap position on the view height
+ *
+ * @return Pair of Int, the real position on image or Pair(-1,-1) if tap is outside
+ */
+fun getRealPointOnImage(xOnView: Float, yOnView: Float, image:Bitmap, offsetX : Float,offsetY:Float) :Pair<Int,Int>{
+    val rectf = RectF(offsetX, offsetY, offsetX+image.width, offsetY + image.height)
+    return if(rectf.contains(xOnView,yOnView)){
+        Pair((xOnView - offsetX).toInt(), (yOnView - offsetY).toInt())
+    }else{
+        Pair(-1,-1)
     }
 }
 

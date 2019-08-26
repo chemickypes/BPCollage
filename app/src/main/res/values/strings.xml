@@ -20,4 +20,7 @@
         want, you can support me by offering me a coffe. Thanks :).
     </string>
     <string name="info">Info</string>
+    <string name="erase_background">Erase Background</string>
+    <string name="tolerance">Color tolerance</string>
+    <string name="stroke">Stroke</string>
 </resources>

@@ -39,6 +39,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".MemeActivity"/>
+        <activity android:name=".BackgroundEraserActivity"/>
     </application>
 
 </manifest>

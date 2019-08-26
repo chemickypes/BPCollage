@@ -1,13 +1,12 @@
 package com.hooloovoochimico.badpiccollage
 
-import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.MenuItem
 import com.manzo.slang.extensions.getAppVersion
-import com.manzo.slang.extensions.startActivity
+import com.manzo.slang.extensions.start
 import kotlinx.android.synthetic.main.activity_info.*
 
 class InfoActivity : AppCompatActivity() {
@@ -58,9 +57,3 @@ class InfoActivity : AppCompatActivity() {
 
 }
 
-fun Intent.start(context: Context): Boolean {
-    return resolveActivity(context.packageManager)?.let {
-        context.startActivity(this)
-        true
-    } ?: false
-}
