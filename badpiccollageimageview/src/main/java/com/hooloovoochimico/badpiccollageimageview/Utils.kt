@@ -50,7 +50,7 @@ fun getResizedMapIntoViewDim(bitmap: Bitmap, width: Int, height: Int): Bitmap{
 
 
     // check if landscape or portrait
-    val scale = if(originalWidth > originalHeight){
+    val scale = if(originalWidth >= originalHeight){
         width/originalWidth
     }else {
         height / originalHeight
@@ -88,6 +88,11 @@ fun getRealPointOnImage(xOnView: Float, yOnView: Float, image:Bitmap, offsetX : 
     }else{
         Pair(-1,-1)
     }
+}
+
+
+fun Bitmap.crop(x:Int,y:Int, width: Int,height: Int): Bitmap {
+    return Bitmap.createBitmap(this,x,y,width, height)
 }
 
 

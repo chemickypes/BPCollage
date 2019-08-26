@@ -31,15 +31,18 @@
 
         <activity
                 android:name=".MainActivity"
-                android:windowSoftInputMode="adjustNothing">
+                android:windowSoftInputMode="adjustNothing"
+                android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <activity android:name=".MemeActivity"/>
-        <activity android:name=".BackgroundEraserActivity"/>
+        <activity android:name=".MemeActivity"
+                  android:screenOrientation="portrait"/>
+        <activity android:name=".BackgroundEraserActivity"
+        android:screenOrientation="portrait"/>
     </application>
 
 </manifest>
