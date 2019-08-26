@@ -73,9 +73,10 @@ fun getCenterPos(bitmap: Bitmap,width: Int, height: Int): kotlin.Pair<Float,Floa
     val originalHeight = bitmap.height.toFloat()
 
     return if(originalWidth > originalHeight){
-        Pair(0f, height/2 - originalHeight/2)
+        Pair(if(width > originalWidth) width/2 - originalWidth/2 else 0f, height/2 - originalHeight/2)
     }else {
-        Pair(width/2 - originalWidth/2 ,0f)
+        Pair(width/2 - originalWidth/2 ,
+            if(height > originalHeight) height/2 - originalHeight/2 else 0f)
     }
 }
 
