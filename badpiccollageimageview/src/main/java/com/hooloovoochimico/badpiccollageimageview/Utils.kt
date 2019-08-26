@@ -53,13 +53,15 @@ fun getResizedMapIntoViewDim(bitmap: Bitmap, width: Int, height: Int): Bitmap{
     val scale = if(originalWidth >= originalHeight){
 
         if(width > originalWidth){
-            1f
+            //1f
+            height / originalHeight
         }else {
             width / originalWidth
         }
     }else {
         if (height > originalHeight){
-            1f
+            //1f
+            width / originalWidth
         }else {
             height / originalHeight
         }
