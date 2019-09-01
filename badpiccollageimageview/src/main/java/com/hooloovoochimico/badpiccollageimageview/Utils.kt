@@ -52,12 +52,14 @@ fun getResizedMapIntoViewDim(bitmap: Bitmap, width: Int, height: Int): Bitmap{
     // check if landscape or portrait
     val scale = if(originalWidth >= originalHeight){
 
-        if(width > originalWidth){
+       /* if(width > originalWidth){
             //1f
             height / originalHeight
         }else {
             width / originalWidth
-        }
+        }*/
+
+        width / originalWidth
     }else {
         if (height > originalHeight){
             //1f
